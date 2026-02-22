@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大麻布 / Hemp Textiles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #111111;
+    --paper: #ffffff;
+    --paper-warm: #f4f4f4;
+    --accent: #111111;
+    --accent-light: #999999;
+    --rule: #dddddd;
+    --text-body: #333333;
+    --text-muted: #888888;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Sans JP', 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    padding: 24px 28px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .header-title {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .header-title-ja {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  .header-title-main {
+    font-size: 15px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+    color: var(--accent);
+  }
+
+  /* Language toggle */
+  .lang-toggle {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    overflow: hidden;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .lang-btn {
+    padding: 5px 12px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-family: 'DM Sans', 'Noto Sans JP', sans-serif;
+    transition: all 0.2s;
+  }
+
+  .lang-btn.active {
+    background: var(--accent);
+    color: var(--paper);
+  }
+
+  /* ─── MAIN ─── */
+  main {
+    flex: 1;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 36px 24px 60px;
+  }
+
+  /* Item number badge */
+  .item-badge {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 28px;
+  }
+
+  .item-num-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .item-num {
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--accent-light);
+    line-height: 1;
+  }
+
+  /* Item title */
+  .item-title {
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+
+  .item-title-en {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+    letter-spacing: 0.03em;
+  }
+
+  /* Image */
+  .item-image-wrap {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: var(--paper-warm);
+    border: 1px solid var(--rule);
+    margin-bottom: 28px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .item-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--text-muted);
+  }
+
+  .image-placeholder-icon {
+    font-size: 32px;
+    opacity: 0.3;
+  }
+
+  .image-placeholder-text {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    opacity: 0.5;
+  }
+
+  /* Metadata table */
+  .meta-section {
+    border-top: 1px solid var(--rule);
+    padding-top: 20px;
+    margin-bottom: 28px;
+  }
+
+  .meta-row {
+    display: flex;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--paper-warm);
+  }
+
+  .meta-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    width: 70px;
+    flex-shrink: 0;
+    padding-top: 2px;
+    text-transform: uppercase;
+  }
+
+  .meta-value {
+    font-size: 14px;
+    color: var(--text-body);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  /* Description */
+  .desc-section {
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+    margin-bottom: 0;
+  }
+
+  .desc-heading {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .desc-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .desc-body {
+    font-size: 14px;
+    line-height: 2.0;
+    color: var(--text-body);
+    font-weight: 300;
+  }
+
+  .desc-body-en {
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--text-body);
+    font-weight: 300;
+  }
+
+  /* Error / Not found */
+  .error-state {
+    text-align: center;
+    padding: 80px 24px;
+    color: var(--text-muted);
+  }
+
+  .error-state-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 72px;
+    font-weight: 300;
+    color: var(--rule);
+    display: block;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  /* Footer */
+  footer {
+    padding: 20px 28px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: center;
+  }
+
+  .footer-text {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+  }
+
+  /* ─── LIST PAGE ─── */
+  .list-header {
+    margin-bottom: 32px;
+  }
+
+  .list-title-ja {
+    font-size: 26px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+
+  .list-title-en {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+  }
+
+  .list-count {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .list-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-bottom: 8px;
+  }
+
+  .list-item {
+    background: var(--paper);
+    padding: 16px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    transition: background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .list-item:hover, .list-item:active {
+    background: var(--paper-warm);
+  }
+
+  .list-item-thumb {
+    width: 52px;
+    height: 52px;
+    background: var(--paper-warm);
+    border: 1px solid var(--rule);
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .list-item-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .list-item-thumb-placeholder {
+    font-size: 18px;
+    opacity: 0.2;
+  }
+
+  .list-item-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .list-item-num {
+    font-size: 10px;
+    color: var(--accent-light);
+    letter-spacing: 0.1em;
+    margin-bottom: 2px;
+  }
+
+  .list-item-title {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .list-item-meta {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .list-item-arrow {
+    font-size: 10px;
+    color: var(--rule);
+    align-self: center;
+    flex-shrink: 0;
+  }
+
+  /* Fade-in animation */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-in {
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .animate-in.delay-1 { animation-delay: 0.08s; opacity: 0; }
+  .animate-in.delay-2 { animation-delay: 0.16s; opacity: 0; }
+  .animate-in.delay-3 { animation-delay: 0.24s; opacity: 0; }
+  .animate-in.delay-4 { animation-delay: 0.32s; opacity: 0; }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-title">
+    <span class="header-title-ja">大麻布コレクション</span>
+    <span class="header-title-main" id="header-subtitle">資料詳細</span>
+  </div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
+</header>
+
+<main id="content"></main>
+
+<footer>
+  <span class="footer-text" id="footer-text">大麻布資料展示</span>
+</footer>
+
+<script>
+// ─── DATA ────────────────────────────────────────────────────────────────────
+// 共通解説（No.1〜10）
+const COMMON_DESC_JA = `江戸末期から明治初期にかけて、滋賀・奈良・長野など各地で広く生産された大麻布の着物です。丈夫で通気性に優れた大麻布は、夏の衣料として庶民に広く用いられました。機械化以前の手績み・手織りによる布は、糸の太さや密度に個体差があり、職人の技と地域の特性を今に伝えています。`;
+
+const COMMON_DESC_EN = `These hemp kimonos were produced across various regions including Shiga, Nara, and Nagano from the late Edo to early Meiji period. Hemp fabric, valued for its durability and breathability, was widely used by ordinary people as summer clothing. Woven by hand before mechanization, each piece reflects individual variation in thread thickness and weave density, preserving the skill of artisans and the character of regional traditions.`;
+
+// 資料データ
+// description: null → 写真のみ、 description: 'common' → 共通解説使用、 文字列 → 個別解説
+const ITEMS = {
+  "1":    { ja: "着物（白・南郡印あり）", en: "White Kimono with Nangun Seal",   fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代中期〜後期", period_en: "Mid–Late Edo Period", region_ja: "滋賀県", region_en: "Shiga Prefecture",  image: "1.jpg",    description: "common" },
+  "2":    { ja: "着物（白）",             en: "White Kimono",                      fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "",        region_en: "",                   image: "2.jpg",    description: "common" },
+  "3":    { ja: "着物（白）",             en: "White Kimono",                      fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "",        region_en: "",                   image: "3.jpg",    description: "common" },
+  "4":    { ja: "着物（白）",             en: "White Kimono",                      fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "",        region_en: "",                   image: "4.jpg",    description: "common" },
+  "5":    { ja: "着物（白・粗めの糸）",   en: "White Kimono with Coarse Yarn",     fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "",        region_en: "",                   image: "5.jpg",    description: "common" },
+  "6":    { ja: "着物（白）",             en: "White Kimono",                      fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "",        region_en: "",                   image: "6.jpg",    description: "common" },
+  "7":    { ja: "着物（白）",             en: "White Kimono",                      fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "",        region_en: "",                   image: "7.jpg",    description: "common" },
+  "8":    { ja: "着物（白）",             en: "White Kimono",                      fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "",        region_en: "",                   image: "8.jpg",    description: "common" },
+  "9":    { ja: "着物（白・家紋の刺繍あり）", en: "White Kimono with Family Crest Embroidery", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "",  region_en: "",                   image: "9.jpg",    description: "common" },
+  "10":   { ja: "着物（白・補修跡あり）", en: "White Kimono with Repair Traces",   fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "",        region_en: "",                   image: "10.jpg",   description: "common" },
+  "11":   { ja: "反物（未仕立て・南都印）", en: "Bolt of Cloth with Nanto Seal",  fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "明治時代",           period_en: "Meiji Period",     region_ja: "奈良県",  region_en: "Nara Prefecture",    image: "11.jpg",   description: null },
+  "12":   { ja: "反物（未仕立て・南郡印）", en: "Bolt of Cloth with Nangun Seal", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代中期〜後期", period_en: "Mid–Late Edo Period", region_ja: "滋賀県", region_en: "Shiga Prefecture",  image: "12.jpg",   description: null },
+  "13":   { ja: "洗い張り（張物・南郡印）", en: "Stretched Cloth with Nangun Seal", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代",         period_en: "Edo Period",       region_ja: "滋賀県",  region_en: "Shiga Prefecture",  image: "13.jpg",   description: null },
+  "14":   { ja: "反物（未仕立て・開田麻布）", en: "Bolt of Cloth from Kaida",      fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "1950年代",          period_en: "1950s",            region_ja: "長野県",  region_en: "Nagano Prefecture", image: "14.jpg",   description: null },
+  "15":   { ja: "打敷の裏地",             en: "Lining of Altar Cloth",             fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "享保17年（1732年）", period_en: "Kyōhō 17 (1732)", region_ja: "",        region_en: "",                   image: "15.jpg",   description: null },
+  "16":   { ja: "打敷の裏地",             en: "Lining of Altar Cloth",             fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "天明4年（1784年）",  period_en: "Tenmei 4 (1784)", region_ja: "",        region_en: "",                   image: "16.jpg",   description: null },
+  "17":   { ja: "打敷の裏地",             en: "Lining of Altar Cloth",             fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "慶應3年（1867年）",  period_en: "Keiō 3 (1867)",   region_ja: "",        region_en: "",                   image: "17.jpg",   description: null },
+  "18":   { ja: "打敷の裏地",             en: "Lining of Altar Cloth",             fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "文政4年（1821年）",  period_en: "Bunsei 4 (1821)", region_ja: "",        region_en: "",                   image: "18.jpg",   description: null },
+  "18_2": { ja: "反物",                   en: "Bolt of Cloth",                     fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代中期〜明治初期", period_en: "Mid Edo–Early Meiji", region_ja: "",    region_en: "",                   image: "18_2.jpg", description: null },
+  "19":   { ja: "オクソザックリ",         en: "Okusozakkuri (Hemp Processing Tool)", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "明治時代",         period_en: "Meiji Period",     region_ja: "滋賀県",  region_en: "Shiga Prefecture",  image: "19.jpg",   description: null },
+  "20":   { ja: "被衣（かづき）",         en: "Kazuki (Head Covering)",             fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代",         period_en: "Edo Period",       region_ja: "滋賀県",  region_en: "Shiga Prefecture",  image: "20.jpg",   description: null },
+  "予2":  { ja: "染め帷子",              en: "Dyed Hemp Garment",                  fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代",         period_en: "Edo Period",       region_ja: "滋賀県",  region_en: "Shiga Prefecture",  image: "21.jpg",   description: null },
+  "21":   { ja: "裂",                     en: "Textile Fragment",                   fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代？",        period_en: "Edo Period (?)",   region_ja: "滋賀県",  region_en: "Shiga Prefecture",  image: "22.jpg",   description: null },
+  "22":   { ja: "裂",                     en: "Textile Fragment",                   fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代？",        period_en: "Edo Period (?)",   region_ja: "滋賀県",  region_en: "Shiga Prefecture",  image: "予2.jpg",  description: null },
+};
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let currentLang = 'ja';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-ja').classList.toggle('active', lang === 'ja');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  renderPage();
+}
+
+// ─── ROUTING ─────────────────────────────────────────────────────────────────
+function getItemId() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('id');
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+function renderPage() {
+  const id = getItemId();
+  const main = document.getElementById('content');
+  const headerSub = document.getElementById('header-subtitle');
+  const footerText = document.getElementById('footer-text');
+
+  // ─── LIST VIEW（idなし）───
+  if (!id) {
+    const isJa = currentLang === 'ja';
+    headerSub.textContent = isJa ? '資料一覧' : 'All Items';
+    footerText.textContent = isJa ? '大麻布資料展示' : 'Hemp Textile Collection';
+
+    const count = Object.keys(ITEMS).length;
+
+    const gridHtml = Object.entries(ITEMS).map(([key, item]) => {
+      const title = isJa ? item.ja : item.en;
+      const period = isJa ? item.period_ja : item.period_en;
+      const region = isJa ? item.region_ja : item.region_en;
+      const meta = [period, region].filter(Boolean).join('　');
+      const displayKey = key === '予2' ? '予' : key;
+      const thumbSrc = item.image ? `images/${item.image}` : '';
+      const thumbHtml = thumbSrc
+        ? `<img src="${thumbSrc}" alt="${title}" onerror="this.parentElement.innerHTML='<span class=\\'list-item-thumb-placeholder\\'>▪</span>'">`
+        : `<span class="list-item-thumb-placeholder">▪</span>`;
+
+      return `
+        <a class="list-item animate-in" href="?id=${encodeURIComponent(key)}">
+          <div class="list-item-thumb">${thumbHtml}</div>
+          <div class="list-item-body">
+            <div class="list-item-num">No. ${displayKey}</div>
+            <div class="list-item-title">${title}</div>
+            <div class="list-item-meta">${meta}</div>
+          </div>
+          <span class="list-item-arrow">›</span>
+        </a>`;
+    }).join('');
+
+    main.innerHTML = `
+      <div class="list-header animate-in">
+        <h1 class="list-title-ja">${isJa ? '大麻布コレクション' : 'Hemp Textile Collection'}</h1>
+        <p class="list-title-en">${isJa ? 'Hemp Textile Collection' : '大麻布コレクション'}</p>
+        <p class="list-count">${isJa ? `全 ${count} 点` : `${count} items`}</p>
+      </div>
+      <div class="list-grid">${gridHtml}</div>`;
+    return;
+  }
+
+  // ─── NOT FOUND ───
+  if (!ITEMS[id]) {
+    main.innerHTML = `
+      <div class="error-state animate-in">
+        <p style="font-size:13px;letter-spacing:0.1em;color:var(--text-muted);">
+          ${currentLang === 'ja' ? '資料が見つかりません。' : 'Item not found.'}
+        </p>
+        <a href="?" style="display:inline-block;margin-top:20px;font-size:12px;color:var(--accent);letter-spacing:0.1em;">
+          ${currentLang === 'ja' ? '← 一覧へ戻る' : '← Back to list'}
+        </a>
+      </div>`;
+    return;
+  }
+
+  const item = ITEMS[id];
+  const isJa = currentLang === 'ja';
+
+  headerSub.textContent = isJa ? '資料詳細' : 'Item Detail';
+  footerText.textContent = isJa ? '大麻布資料展示' : 'Hemp Textile Collection';
+
+  const title = isJa ? item.ja : item.en;
+  const fiber = isJa ? item.fiber_ja : item.fiber_en;
+  const period = isJa ? item.period_ja : item.period_en;
+  const region = isJa ? item.region_ja : item.region_en;
+
+  // Image
+  const imageHtml = item.image
+    ? `<img src="images/${item.image}" alt="${title}" onerror="this.parentElement.innerHTML='<div class=\\'image-placeholder\\'><span class=\\'image-placeholder-icon\\'>⬜</span><span class=\\'image-placeholder-text\\'>${item.image}</span></div>'">`
+    : `<div class="image-placeholder"><span class="image-placeholder-icon">⬜</span><span class="image-placeholder-text">${isJa ? '画像準備中' : 'Image coming soon'}</span></div>`;
+
+  // Metadata
+  const metaRows = [
+    { label: isJa ? '繊維' : 'Fiber', value: fiber },
+    period ? { label: isJa ? '年代' : 'Period', value: period } : null,
+    region ? { label: isJa ? '地域' : 'Region', value: region } : null,
+  ].filter(Boolean);
+
+  const metaHtml = metaRows.map(r => `
+    <div class="meta-row">
+      <span class="meta-label">${r.label}</span>
+      <span class="meta-value">${r.value}</span>
+    </div>
+  `).join('');
+
+  // Description
+  let descHtml = '';
+  if (item.description) {
+    const descText = item.description === 'common'
+      ? (isJa ? COMMON_DESC_JA : COMMON_DESC_EN)
+      : (isJa ? item.description : item.descriptionEn || item.description);
+
+    const heading = isJa ? '解説' : 'Description';
+    const bodyClass = isJa ? 'desc-body' : 'desc-body-en';
+
+    descHtml = `
+      <div class="desc-section animate-in delay-4">
+        <p class="desc-heading">${heading}</p>
+        <p class="${bodyClass}">${descText}</p>
+      </div>`;
+  }
+
+  // Num display
+  const displayId = id === '予2' ? '予' : id;
+
+  main.innerHTML = `
+    <a href="?" style="display:inline-block;font-size:11px;letter-spacing:0.15em;color:var(--text-muted);text-decoration:none;margin-bottom:24px;">
+      ← ${isJa ? '一覧へ戻る' : 'Back to list'}
+    </a>
+    <div class="item-badge animate-in">
+      <span class="item-num-label">${isJa ? 'No.' : 'No.'}</span>
+      <span class="item-num">${displayId}</span>
+    </div>
+    <h1 class="item-title animate-in delay-1">${title}</h1>
+    <p class="item-title-en animate-in delay-1">${isJa ? item.en : item.ja}</p>
+    <div class="item-image-wrap animate-in delay-2">${imageHtml}</div>
+    <div class="meta-section animate-in delay-3">${metaHtml}</div>
+    ${descHtml}
+  `;
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+renderPage();
+</script>
+
+</body>
+</html>
