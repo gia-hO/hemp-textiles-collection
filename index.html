@@ -113,6 +113,22 @@
   footer { padding: 20px 28px; border-top: 1px solid var(--rule); display: flex; justify-content: center; }
   .footer-text { font-size: 10px; letter-spacing: 0.15em; color: var(--text-muted); }
 
+  /* Mobile responsive */
+  @media (max-width: 480px) {
+    header { padding: 16px 18px 14px; }
+    .header-title-main { font-size: 13px; }
+    main { padding: 24px 16px 48px; }
+    .item-title { font-size: 18px; }
+    .list-grid { grid-template-columns: 1fr; }
+    .list-item { padding: 14px 12px; }
+    .list-item-thumb { width: 48px; height: 48px; }
+    .list-title-ja { font-size: 22px; }
+    .meta-label { width: 56px; font-size: 9px; }
+    .meta-value { font-size: 13px; }
+    .topic-label { font-size: 12px; }
+    .topic-text { font-size: 12px; line-height: 1.9; }
+  }
+
   /* Animation */
   @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   .animate-in { animation: fadeUp 0.5s ease forwards; }
@@ -258,9 +274,7 @@ function setLang(lang) {
 
 function toggleTopic(el) {
   const item = el.closest('.topic-item');
-  const isOpen = item.classList.contains('open');
-  document.querySelectorAll('.topic-item.open').forEach(i => i.classList.remove('open'));
-  if (!isOpen) item.classList.add('open');
+  item.classList.toggle('open');
 }
 
 function getItemId() {
