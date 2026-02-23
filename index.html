@@ -113,6 +113,74 @@
   footer { padding: 20px 28px; border-top: 1px solid var(--rule); display: flex; justify-content: center; }
   .footer-text { font-size: 10px; letter-spacing: 0.15em; color: var(--text-muted); }
 
+  /* Lightbox */
+  .item-image-wrap { cursor: zoom-in; }
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .lightbox.active { display: flex; }
+  .lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  .lightbox-close {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1;
+    opacity: 0.8;
+  }
+  .lightbox-close:hover { opacity: 1; }
+
+  /* Lightbox */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 100;
+    cursor: zoom-out;
+    align-items: center;
+    justify-content: center;
+  }
+  .lightbox.active {
+    display: flex;
+  }
+  .lightbox img {
+    max-width: 92vw;
+    max-height: 92vh;
+    object-fit: contain;
+    display: block;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    color: rgba(255,255,255,0.7);
+    font-size: 28px;
+    font-weight: 300;
+    cursor: pointer;
+    line-height: 1;
+    background: none;
+    border: none;
+    padding: 4px 8px;
+  }
+  .item-image-wrap { cursor: zoom-in; }
+
   /* Mobile responsive */
   @media (max-width: 480px) {
     header { padding: 16px 18px 14px; }
@@ -151,7 +219,17 @@
   </div>
 </header>
 
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
 <main id="content"></main>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
 
 <footer>
   <span class="footer-text" id="footer-text">大麻布資料展示</span>
@@ -272,10 +350,38 @@ function setLang(lang) {
   renderPage();
 }
 
+function openLightbox(src, alt) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox-img').alt = alt;
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+});
+
 function toggleTopic(el) {
   const item = el.closest('.topic-item');
   item.classList.toggle('open');
 }
+
+function openLightbox(src, alt) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox-img').alt = alt;
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
 function getItemId() {
   return new URLSearchParams(window.location.search).get('id');
@@ -349,7 +455,7 @@ function renderPage() {
   const displayId = id === '予2' ? '予' : id;
 
   const imageHtml = item.image
-    ? `<img src="images/${item.image}" alt="${title}" onerror="this.parentElement.innerHTML='<div class=\\'image-placeholder\\'><span class=\\'image-placeholder-icon\\'>⬜</span><span class=\\'image-placeholder-text\\'>${item.image}</span></div>'">`
+    ? `<img src="images/${item.image}" alt="${title}" onclick="openLightbox('images/${item.image}', '${title}')" onerror="this.parentElement.innerHTML='<div class=\\'image-placeholder\\'><span class=\\'image-placeholder-icon\\'>⬜</span><span class=\\'image-placeholder-text\\'>${item.image}</span></div>'">`
     : `<div class="image-placeholder"><span class="image-placeholder-icon">⬜</span><span class="image-placeholder-text">${isJa ? '画像準備中' : 'Image coming soon'}</span></div>`;
 
   const metaRows = [
