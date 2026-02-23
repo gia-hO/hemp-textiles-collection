@@ -146,6 +146,16 @@
   }
   .lightbox-close:hover { opacity: 1; }
 
+  /* Fixed topics (value=3) */
+  .fixed-topics-section { margin-bottom: 40px; }
+  .fixed-topic { margin-bottom: 28px; }
+  .fixed-topic-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+  .fixed-topic-text { font-size: 13px; line-height: 2.0; color: var(--text-body); }
+  .ref-image-block { margin-top: 28px; }
+  .ref-image-block img { width: 100%; max-width: 480px; display: block; cursor: zoom-in; margin-bottom: 10px; }
+  .ref-image-caption { font-size: 12px; color: var(--text-body); margin-bottom: 6px; line-height: 1.7; }
+  .ref-image-credit { font-size: 10px; color: var(--text-muted); line-height: 1.6; }
+
   /* Lightbox */
   .lightbox {
     display: none;
@@ -312,32 +322,45 @@ const TOPICS = [
   }
 ];
 
-// ─── ITEMS（topics: 12トピックの表示フラグ [大麻布とは,歴史,信仰,しろ高宮,奈良県,洗い張り,開田,オクソ,被衣,打敷,染め帷子,砧]）
+// ─── 参考画像データ
+const REF_IMAGES = {
+  "ref01": {
+    file: "ref01.jpg",
+    credit: "Nishikawa Sukenobu, Picture Book: Mount Asaka (Ehon Asakayama), 1739. The Metropolitan Museum of Art, Rogers Fund, 1918 (JIB35). Public domain.",
+    caption_ja: "頭から被衣（かづき）を被る江戸時代の女性",
+    caption_en: "An Edo-period woman wearing a kazuki head veil"
+  }
+};
+
+// ─── ITEMS
+// topics: 12トピックの表示フラグ [大麻布とは,歴史,信仰,しろ高宮,奈良県,洗い張り,開田,オクソ,被衣,打敷,染め帷子,砧]
+// 0=非表示, 1=アコーディオン, 3=固定表示
+// ref_image: 参考画像キー（REF_IMAGESのキー）or null
 const ITEMS = {
-  "1":    { ja: "着物（白・南郡印あり）", en: "White Kimono with Nangun Seal", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代中期〜後期", period_en: "Mid–Late Edo Period", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "1.jpg",    topics: [1,1,1,1,0,0,0,0,0,0,0,0] },
-  "2":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "2.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0] },
-  "3":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "3.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0] },
-  "4":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "4.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0] },
-  "5":    { ja: "着物（白・粗めの糸）", en: "White Kimono with Coarse Yarn", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "5.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0] },
-  "6":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "6.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0] },
-  "7":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "7.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0] },
-  "8":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "8.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0] },
-  "9":    { ja: "着物（白・家紋の刺繍あり）", en: "White Kimono with Family Crest Embroidery", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "9.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0] },
-  "10":   { ja: "着物（白・補修跡あり）", en: "White Kimono with Repair Traces", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "10.jpg",   topics: [1,1,1,0,0,0,0,0,0,0,0,0] },
-  "11":   { ja: "反物（未仕立て・南都印）", en: "Bolt of Cloth with Nanto Seal", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "明治時代", period_en: "Meiji Period", region_ja: "奈良県", region_en: "Nara Prefecture", image: "11.jpg",   topics: [1,1,1,0,1,0,0,0,0,0,0,0] },
-  "12":   { ja: "反物（未仕立て・南郡印）", en: "Bolt of Cloth with Nangun Seal", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代中期〜後期", period_en: "Mid–Late Edo Period", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "12.jpg",   topics: [1,1,1,1,0,0,0,0,0,0,0,0] },
-  "13":   { ja: "洗い張り（張物・南郡印）", en: "Stretched Cloth with Nangun Seal", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代", period_en: "Edo Period", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "13.jpg",   topics: [1,1,1,1,0,1,0,0,0,0,0,0] },
-  "14":   { ja: "反物（未仕立て・開田麻布）", en: "Bolt of Cloth from Kaida", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "1950年代", period_en: "1950s", region_ja: "長野県", region_en: "Nagano Prefecture", image: "14.jpg",   topics: [1,1,1,0,0,0,1,0,0,0,0,0] },
-  "15":   { ja: "打敷の裏地", en: "Lining of Altar Cloth", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "享保17年（1732年）", period_en: "Kyōhō 17 (1732)", region_ja: "", region_en: "", image: "15.jpg",   topics: [1,1,1,0,0,0,0,0,0,1,0,0] },
-  "16":   { ja: "打敷の裏地", en: "Lining of Altar Cloth", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "天明4年（1784年）", period_en: "Tenmei 4 (1784)", region_ja: "", region_en: "", image: "16.jpg",   topics: [1,1,1,0,0,0,0,0,0,1,0,0] },
-  "17":   { ja: "打敷の裏地", en: "Lining of Altar Cloth", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "慶應3年（1867年）", period_en: "Keiō 3 (1867)", region_ja: "", region_en: "", image: "17.jpg",   topics: [1,1,1,0,0,0,0,0,0,1,0,1] },
-  "18":   { ja: "打敷の裏地", en: "Lining of Altar Cloth", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "文政4年（1821年）", period_en: "Bunsei 4 (1821)", region_ja: "", region_en: "", image: "18.jpg",   topics: [1,1,1,0,0,0,0,0,0,1,0,0] },
-  "18_2": { ja: "反物", en: "Bolt of Cloth", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代中期〜明治初期", period_en: "Mid Edo–Early Meiji", region_ja: "", region_en: "", image: "18_2.jpg", topics: [1,1,1,0,0,0,0,0,0,0,0,0] },
-  "19":   { ja: "オクソザックリ", en: "Okuso-zakkuri (Work Garment)", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "明治時代", period_en: "Meiji Period", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "19.jpg",   topics: [1,1,1,0,0,0,0,1,0,0,0,0] },
-  "20":   { ja: "被衣（かづき）", en: "Kazuki (Head Veil)", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代", period_en: "Edo Period", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "20.jpg",   topics: [1,1,1,0,0,0,0,0,1,0,0,0] },
-  "予2":  { ja: "染め帷子", en: "Dyed Hemp Garment", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代", period_en: "Edo Period", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "21.jpg",   topics: [1,1,1,0,0,0,0,0,0,0,1,0] },
-  "21":   { ja: "裂", en: "Textile Fragment", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代？", period_en: "Edo Period (?)", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "22.jpg",   topics: [1,1,1,0,0,0,0,0,0,0,0,1] },
-  "22":   { ja: "裂", en: "Textile Fragment", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代？", period_en: "Edo Period (?)", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "予2.jpg",  topics: [1,1,1,0,0,0,0,0,0,0,0,1] },
+  "1":    { ja: "着物（白・南郡印あり）", en: "White Kimono with Nangun Seal", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代中期〜後期", period_en: "Mid–Late Edo Period", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "1.jpg",    topics: [1,1,1,3,0,0,0,0,0,0,0,0], ref_image: null },
+  "2":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "2.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "3":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "3.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "4":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "4.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "5":    { ja: "着物（白・粗めの糸）", en: "White Kimono with Coarse Yarn", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "5.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "6":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "6.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "7":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "7.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "8":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "8.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "9":    { ja: "着物（白・家紋の刺繍あり）", en: "White Kimono with Family Crest Embroidery", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "9.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "10":   { ja: "着物（白・補修跡あり）", en: "White Kimono with Repair Traces", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸末期〜明治初期（1850〜1900年頃）", period_en: "Late Edo–Early Meiji (c. 1850–1900)", region_ja: "", region_en: "", image: "10.jpg",   topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "11":   { ja: "反物（未仕立て・南都印）", en: "Bolt of Cloth with Nanto Seal", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "明治時代", period_en: "Meiji Period", region_ja: "奈良県", region_en: "Nara Prefecture", image: "11.jpg",   topics: [1,1,1,0,3,0,0,0,0,0,0,0], ref_image: null },
+  "12":   { ja: "反物（未仕立て・南郡印）", en: "Bolt of Cloth with Nangun Seal", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代中期〜後期", period_en: "Mid–Late Edo Period", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "12.jpg",   topics: [1,1,1,3,0,0,0,0,0,0,0,0], ref_image: null },
+  "13":   { ja: "洗い張り（張物・南郡印）", en: "Stretched Cloth with Nangun Seal", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代", period_en: "Edo Period", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "13.jpg",   topics: [1,1,1,3,0,3,0,0,0,0,0,0], ref_image: null },
+  "14":   { ja: "反物（未仕立て・開田麻布）", en: "Bolt of Cloth from Kaida", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "1950年代", period_en: "1950s", region_ja: "長野県", region_en: "Nagano Prefecture", image: "14.jpg",   topics: [1,1,1,0,0,0,3,0,0,0,0,0], ref_image: null },
+  "15":   { ja: "打敷の裏地", en: "Lining of Altar Cloth", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "享保17年（1732年）", period_en: "Kyōhō 17 (1732)", region_ja: "", region_en: "", image: "15.jpg",   topics: [1,1,1,0,0,0,0,0,0,3,0,0], ref_image: null },
+  "16":   { ja: "打敷の裏地", en: "Lining of Altar Cloth", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "天明4年（1784年）", period_en: "Tenmei 4 (1784)", region_ja: "", region_en: "", image: "16.jpg",   topics: [1,1,1,0,0,0,0,0,0,3,0,0], ref_image: null },
+  "17":   { ja: "打敷の裏地", en: "Lining of Altar Cloth", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "慶應3年（1867年）", period_en: "Keiō 3 (1867)", region_ja: "", region_en: "", image: "17.jpg",   topics: [1,1,1,0,0,0,0,0,0,3,0,3], ref_image: null },
+  "18":   { ja: "打敷の裏地", en: "Lining of Altar Cloth", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "文政4年（1821年）", period_en: "Bunsei 4 (1821)", region_ja: "", region_en: "", image: "18.jpg",   topics: [1,1,1,0,0,0,0,0,0,3,0,0], ref_image: null },
+  "18_2": { ja: "反物", en: "Bolt of Cloth", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代中期〜明治初期", period_en: "Mid Edo–Early Meiji", region_ja: "", region_en: "", image: "18_2.jpg", topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "19":   { ja: "オクソザックリ", en: "Okuso-zakkuri (Work Garment)", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "明治時代", period_en: "Meiji Period", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "19.jpg",   topics: [1,1,1,0,0,0,0,3,0,0,0,0], ref_image: null },
+  "20":   { ja: "被衣（かづき）", en: "Kazuki (Head Veil)", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代", period_en: "Edo Period", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "20.jpg",   topics: [1,1,1,0,0,0,0,0,3,0,0,0], ref_image: "ref01" },
+  "予2":  { ja: "染め帷子", en: "Dyed Hemp Garment", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代", period_en: "Edo Period", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "21.jpg",   topics: [1,1,1,0,0,0,0,0,0,0,3,0], ref_image: null },
+  "21":   { ja: "裂", en: "Textile Fragment", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代？", period_en: "Edo Period (?)", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "22.jpg",   topics: [1,1,1,0,0,0,0,0,0,0,0,3], ref_image: null },
+  "22":   { ja: "裂", en: "Textile Fragment", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代？", period_en: "Edo Period (?)", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "予2.jpg",  topics: [1,1,1,0,0,0,0,0,0,0,0,3], ref_image: null },
 };
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
@@ -469,6 +492,28 @@ function renderPage() {
       <span class="meta-value">${r.value}</span>
     </div>`).join('');
 
+  // 固定解説（3）
+  const fixedTopics = TOPICS
+    .filter((t, i) => item.topics[i] === 3)
+    .map(t => `
+    <div class="fixed-topic">
+      <p class="fixed-topic-label">${isJa ? t.label_ja : t.label_en}</p>
+      <p class="fixed-topic-text">${isJa ? t.desc_ja : t.desc_en}</p>
+    </div>`).join('');
+
+  // 参考画像
+  let refImageHtml = '';
+  if (item.ref_image && REF_IMAGES[item.ref_image]) {
+    const ref = REF_IMAGES[item.ref_image];
+    refImageHtml = `
+    <div class="ref-image-block">
+      <img src="images/${ref.file}" alt="${isJa ? ref.caption_ja : ref.caption_en}" onclick="openLightbox('images/${ref.file}', '${isJa ? ref.caption_ja : ref.caption_en}')" onerror="this.style.display='none'">
+      <p class="ref-image-caption">${isJa ? ref.caption_ja : ref.caption_en}</p>
+      <p class="ref-image-credit">${ref.credit}</p>
+    </div>`;
+  }
+
+  // アコーディオン（1）
   const topicsHtml = TOPICS
     .filter((t, i) => item.topics[i] === 1)
     .map(t => `
@@ -482,8 +527,14 @@ function renderPage() {
       </div>
     </div>`).join('');
 
+  const accordionSection = topicsHtml ? `
+    <div class="topics-section animate-in delay-4">
+      <p class="topics-heading">${isJa ? '関連解説' : 'Related Topics'}</p>
+      ${topicsHtml}
+    </div>` : '';
+
   main.innerHTML = `
-    <a href="?" style="display:inline-block;font-size:11px;letter-spacing:0.15em;color:var(--text-muted);text-decoration:none;margin-bottom:24px;">
+    <a href="?" style="display:block;font-size:11px;letter-spacing:0.15em;color:var(--text-muted);text-decoration:none;margin-bottom:16px;">
       ← ${isJa ? '一覧へ戻る' : 'Back to list'}
     </a>
     <div class="item-badge animate-in">
@@ -494,10 +545,8 @@ function renderPage() {
     <p class="item-title-en animate-in delay-1">${isJa ? item.en : item.ja}</p>
     <div class="item-image-wrap animate-in delay-2">${imageHtml}</div>
     <div class="meta-section animate-in delay-3">${metaHtml}</div>
-    <div class="topics-section animate-in delay-4">
-      <p class="topics-heading">${isJa ? '関連解説' : 'Related Topics'}</p>
-      ${topicsHtml}
-    </div>`;
+    ${fixedTopics ? `<div class="fixed-topics-section animate-in delay-4">${fixedTopics}${refImageHtml}</div>` : ''}
+    ${accordionSection}`;
 }
 
 renderPage();
