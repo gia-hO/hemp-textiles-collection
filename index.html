@@ -52,7 +52,7 @@
   /* Item detail */
   .item-badge { display: inline-flex; align-items: baseline; gap: 6px; margin-bottom: 28px; }
   .item-num-label { font-size: 11px; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase; }
-  .item-num { font-size: 28px; font-weight: 300; color: var(--accent-light); line-height: 1; }
+  .item-num { font-size: 11px; letter-spacing: 0.2em; color: var(--accent-light); line-height: 1; }
   .item-title { font-size: 22px; font-weight: 400; letter-spacing: 0.05em; line-height: 1.5; margin-bottom: 8px; color: var(--ink); }
   .item-title-en { font-size: 13px; font-weight: 300; color: var(--text-muted); margin-bottom: 28px; letter-spacing: 0.03em; }
 
@@ -69,7 +69,7 @@
   .meta-value { font-size: 14px; color: var(--text-body); line-height: 1.6; flex: 1; }
 
   /* Topics accordion */
-  .topics-section { border-top: 1px solid var(--rule); padding-top: 20px; }
+  .topics-section { padding-top: 20px; }
   .topics-heading {
     font-size: 10px; letter-spacing: 0.25em; color: var(--text-muted);
     text-transform: uppercase; margin-bottom: 12px;
@@ -97,7 +97,7 @@
   .list-title-ja { font-size: 26px; font-weight: 400; letter-spacing: 0.08em; line-height: 1.4; margin-bottom: 4px; }
   .list-title-en { font-size: 13px; font-weight: 300; color: var(--text-muted); letter-spacing: 0.05em; margin-top: 2px; }
   .list-count { font-size: 11px; letter-spacing: 0.2em; color: var(--text-muted); margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--rule); }
-  .list-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+  .list-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); overflow: hidden; }
   .list-item { background: var(--paper); padding: 16px; text-decoration: none; color: inherit; display: flex; gap: 12px; align-items: flex-start; transition: background 0.15s; -webkit-tap-highlight-color: transparent; }
   .list-item:hover, .list-item:active { background: var(--paper-warm); }
   .list-item-thumb { width: 52px; height: 52px; background: var(--paper-warm); border: 1px solid var(--rule); flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
@@ -147,7 +147,7 @@
   .lightbox-close:hover { opacity: 1; }
 
   /* Fixed topics (value=3) */
-  .fixed-topics-section { margin-bottom: 40px; }
+  .fixed-topics-section { border-top: 1px solid var(--rule); padding-top: 20px; margin-bottom: 0; }
   .fixed-topic { margin-bottom: 28px; }
   .fixed-topic-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
   .fixed-topic-text { font-size: 13px; line-height: 2.0; color: var(--text-body); }
@@ -251,19 +251,19 @@ const TOPICS = [
   {
     label_ja: "大麻布とは",
     label_en: "About Hemp Cloth",
-    desc_ja: "大麻の未晒しの布と晒し布。大麻布は、水に浸し、天日に晒すことを繰り返すことで白く柔らかくなるという特性がある。江戸時代に木綿が普及する以前は、大麻布による衣服は、苧麻布と共に、庶民から上流階級に至るまで幅広く着用されていた。昭和23年（1948年）7月、GHQの要請を受けた日本政府により大麻取締法が制定・施行されると、大麻栽培は免許制度へ移行し、国内の生産量は急速に減少していった。",
+    desc_ja: "大麻は、桑科に属す一年草本で、日本列島の気候風土にあう植物繊維である。大麻繊維を用いて作られた大麻布は、水に浸し、天日に晒すことを繰り返すことで白く柔らかくなるという特性がある。江戸時代に木綿が普及する以前は、大麻布による衣服は、苧麻布と共に、庶民から上流階級に至るまで幅広く着用されていた。昭和23年（1948年）7月、GHQの要請を受けた日本政府により大麻取締法が制定・施行されると、大麻栽培は免許制度へ移行し、国内の生産量は急速に減少していった。",
     desc_en: "Hemp cloth exists in both unbleached and bleached forms. Repeated soaking in water and sun-bleaching gradually whitens and softens the fabric. Before cotton became widespread in the Edo period, hemp garments were worn across all social classes. When the Cannabis Control Act was enacted in July 1948 under GHQ directive, hemp cultivation became subject to a licensing system and domestic production declined rapidly."
   },
   {
     label_ja: "歴史",
     label_en: "History",
-    desc_ja: "約1万年前の縄文時代の遺跡からは大麻の繊維片や種子も出土しており、その頃から栽培による繊維利用が行われていたことがわかっている。日本では、大麻に加え、刺草（イラクサ）、苧麻（チョマ、日本名：カラムシ）などの草木繊維を総称して「麻」と呼び、さまざまな種類の草木が繊維として利用されてきた。",
+    desc_ja: "日本では約1万年前の縄文時代の鳥浜貝塚から大麻の繊維片や種子が出土するほど、長い繊維利用の歴史がある。日本では、大麻に加え、刺草（イラクサ）、苧麻（チョマ、日本名：カラムシ）などの草木繊維を総称して「麻」と呼び、さまざまな種類の草木が繊維として利用されてきた。",
     desc_en: "Hemp fiber fragments and seeds have been excavated from Jōmon period sites dating back approximately 10,000 years, demonstrating that cultivated fiber use began in that era. In Japan, hemp along with nettle, ramie, and other plant fibers are collectively called 'asa,' and a wide variety of plants have been utilized as textile fibers throughout history."
   },
   {
     label_ja: "信仰",
     label_en: "Ritual and Faith",
-    desc_ja: "大麻繊維は、現代でも群馬県岩島地区などで栽培されており、天皇即位の儀式で着用される装束や神宮の祭祀に用いられている。大麻は、日本では神聖な植物として、神道の信仰において欠かすことができない草木繊維でもある。",
+    desc_ja: "大麻繊維は、日本では神聖な植物として、神道の信仰において欠かすことができない草木繊維である。現代でも群馬県岩島地区などで栽培されており、天皇即位の儀式で着用される装束や神宮の祭祀に用いられている。",
     desc_en: "Hemp fiber is still cultivated today in areas such as the Iwashima district of Gunma Prefecture, and is used in the ceremonial robes worn at Imperial accession rites and in Shinto shrine rituals. In Japan, hemp is revered as a sacred plant and remains an indispensable fiber in Shinto religious practice."
   },
   {
