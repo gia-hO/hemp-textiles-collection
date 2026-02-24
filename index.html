@@ -48,6 +48,7 @@
 
   /* MAIN */
   main { flex: 1; max-width: 600px; margin: 0 auto; width: 100%; padding: 36px 24px 60px; }
+  main.list-view { max-width: 960px; }
 
   /* Item detail */
   .item-badge { display: inline-flex; align-items: baseline; gap: 6px; margin-bottom: 28px; }
@@ -425,6 +426,7 @@ function renderPage() {
 
   // LIST VIEW
   if (!id) {
+    main.classList.add('list-view');
     headerSub.textContent = isJa ? '資料一覧' : 'All Items';
     footerText.textContent = isJa ? '大麻布資料展示' : 'Hemp Textile Collection';
     const count = Object.keys(ITEMS).length;
@@ -460,6 +462,7 @@ function renderPage() {
 
   // NOT FOUND
   if (!ITEMS[id]) {
+    main.classList.remove('list-view');
     main.innerHTML = `
       <div class="animate-in" style="text-align:center;padding:80px 24px;">
         <p style="font-size:13px;letter-spacing:0.1em;color:var(--text-muted);">
@@ -473,6 +476,7 @@ function renderPage() {
   }
 
   // ITEM DETAIL
+  main.classList.remove('list-view');
   const item = ITEMS[id];
   headerSub.textContent = isJa ? '資料詳細' : 'Item Detail';
   footerText.textContent = isJa ? '大麻布資料展示' : 'Hemp Textile Collection';
