@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大麻布 / Hemp Textiles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #111111;
+    --paper: #ffffff;
+    --paper-warm: #f4f4f4;
+    --accent: #111111;
+    --accent-light: #999999;
+    --rule: #dddddd;
+    --text-body: #333333;
+    --text-muted: #888888;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Sans JP', 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* HEADER */
+  header {
+    padding: 24px 28px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .header-title { display: flex; flex-direction: column; gap: 2px; }
+  .header-title-ja { font-size: 11px; letter-spacing: 0.25em; color: var(--text-muted); font-weight: 300; }
+  .header-title-main { font-size: 15px; letter-spacing: 0.1em; font-weight: 400; color: var(--accent); }
+  .lang-toggle { display: flex; border: 1px solid var(--rule); border-radius: 2px; overflow: hidden; flex-shrink: 0; margin-top: 2px; }
+  .lang-btn { padding: 5px 12px; font-size: 11px; letter-spacing: 0.1em; cursor: pointer; background: transparent; border: none; color: var(--text-muted); font-family: 'DM Sans', 'Noto Sans JP', sans-serif; transition: all 0.2s; }
+  .lang-btn.active { background: var(--accent); color: var(--paper); }
+
+  /* MAIN */
+  main { flex: 1; max-width: 600px; margin: 0 auto; width: 100%; padding: 36px 24px 60px; }
+  main.list-view { max-width: 960px; }
+
+  /* Item detail */
+  .item-badge { display: inline-flex; align-items: baseline; gap: 6px; margin-bottom: 28px; }
+  .item-num-label { font-size: 11px; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase; }
+  .item-num { font-size: 11px; letter-spacing: 0.2em; color: var(--accent-light); line-height: 1; }
+  .item-title { font-size: 22px; font-weight: 400; letter-spacing: 0.05em; line-height: 1.5; margin-bottom: 8px; color: var(--ink); }
+  .item-title-en { font-size: 13px; font-weight: 300; color: var(--text-muted); margin-bottom: 28px; letter-spacing: 0.03em; }
+
+  .item-image-wrap { width: 100%; aspect-ratio: 4/3; background: var(--paper-warm); border: 1px solid var(--rule); margin-bottom: 28px; overflow: hidden; }
+  .item-image-wrap img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .image-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--text-muted); }
+  .image-placeholder-icon { font-size: 32px; opacity: 0.3; }
+  .image-placeholder-text { font-size: 11px; letter-spacing: 0.15em; opacity: 0.5; }
+
+  /* Metadata */
+  .meta-section { border-top: 1px solid var(--rule); padding-top: 20px; margin-bottom: 28px; }
+  .meta-row { display: flex; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--paper-warm); }
+  .meta-label { font-size: 10px; letter-spacing: 0.2em; color: var(--text-muted); width: 70px; flex-shrink: 0; padding-top: 2px; text-transform: uppercase; }
+  .meta-value { font-size: 14px; color: var(--text-body); line-height: 1.6; flex: 1; }
+
+  /* Topics accordion */
+  .topics-section { padding-top: 20px; }
+  .topics-heading {
+    font-size: 10px; letter-spacing: 0.25em; color: var(--text-muted);
+    text-transform: uppercase; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .topics-heading::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+  .topic-item { border-bottom: 1px solid var(--rule); }
+  .topic-trigger {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 0; background: none; border: none; cursor: pointer;
+    text-align: left; gap: 12px; -webkit-tap-highlight-color: transparent;
+  }
+  .topic-label { font-size: 13px; font-weight: 400; letter-spacing: 0.03em; color: var(--text-body); line-height: 1.5; flex: 1; }
+  .topic-trigger:hover .topic-label { color: var(--ink); }
+  .topic-arrow { font-size: 16px; color: var(--accent-light); flex-shrink: 0; transition: transform 0.25s ease; line-height: 1; }
+  .topic-item.open .topic-arrow { transform: rotate(45deg); }
+
+  .topic-body { overflow: hidden; max-height: 0; transition: max-height 0.35s ease, opacity 0.25s ease; opacity: 0; }
+  .topic-item.open .topic-body { max-height: 1000px; opacity: 1; }
+  .topic-text { font-size: 13px; line-height: 2.0; color: var(--text-body); font-weight: 300; padding-bottom: 20px; }
+
+  /* List page */
+  .list-header { margin-bottom: 32px; }
+  .list-title-ja { font-size: 26px; font-weight: 400; letter-spacing: 0.08em; line-height: 1.4; margin-bottom: 4px; }
+  .list-title-en { font-size: 13px; font-weight: 300; color: var(--text-muted); letter-spacing: 0.05em; margin-top: 2px; }
+  .list-count { font-size: 11px; letter-spacing: 0.2em; color: var(--text-muted); margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--rule); }
+  .list-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); overflow: hidden; }
+  .list-item { background: var(--paper); padding: 16px; text-decoration: none; color: inherit; display: flex; gap: 12px; align-items: flex-start; transition: background 0.15s; -webkit-tap-highlight-color: transparent; min-width: 0; }
+  .list-item:hover, .list-item:active { background: var(--paper-warm); }
+  .list-item-thumb { width: 52px; height: 52px; background: var(--paper-warm); border: 1px solid var(--rule); flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .list-item-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .list-item-thumb-placeholder { font-size: 18px; opacity: 0.2; }
+  .list-item-body { flex: 1; min-width: 0; }
+  .list-item-num { font-size: 10px; color: var(--accent-light); letter-spacing: 0.1em; margin-bottom: 2px; }
+  .list-item-title { font-size: 12px; font-weight: 400; letter-spacing: 0.03em; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .list-item-meta { font-size: 10px; color: var(--text-muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .list-item-arrow { font-size: 10px; color: var(--rule); align-self: center; flex-shrink: 0; }
+
+  /* Footer */
+  footer { padding: 20px 28px; border-top: 1px solid var(--rule); display: flex; justify-content: center; }
+  .footer-text { font-size: 10px; letter-spacing: 0.15em; color: var(--text-muted); }
+
+  /* Lightbox */
+  .item-image-wrap { cursor: zoom-in; }
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .lightbox.active { display: flex; }
+  .lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  .lightbox-close {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1;
+    opacity: 0.8;
+  }
+  .lightbox-close:hover { opacity: 1; }
+
+  /* Fixed topics (value=3) */
+  .fixed-topics-section { padding-top: 20px; margin-bottom: 0; }
+  .fixed-topic { margin-bottom: 28px; }
+  .fixed-topic-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+  .fixed-topic-text { font-size: 13px; line-height: 2.0; color: var(--text-body); }
+  .ref-image-block { margin-top: 28px; }
+  .ref-image-block img { width: 100%; max-width: 480px; display: block; cursor: zoom-in; margin-bottom: 10px; }
+  .ref-image-caption { font-size: 12px; color: var(--text-body); margin-bottom: 6px; line-height: 1.7; }
+  .ref-image-credit { font-size: 10px; color: var(--text-muted); line-height: 1.6; }
+
+  /* Lightbox */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 100;
+    cursor: zoom-out;
+    align-items: center;
+    justify-content: center;
+  }
+  .lightbox.active {
+    display: flex;
+  }
+  .lightbox img {
+    max-width: 92vw;
+    max-height: 92vh;
+    object-fit: contain;
+    display: block;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    color: rgba(255,255,255,0.7);
+    font-size: 28px;
+    font-weight: 300;
+    cursor: pointer;
+    line-height: 1;
+    background: none;
+    border: none;
+    padding: 4px 8px;
+  }
+  .item-image-wrap { cursor: zoom-in; }
+
+  /* Mobile responsive */
+  @media (max-width: 480px) {
+    header { padding: 16px 18px 14px; }
+    .header-title-main { font-size: 13px; }
+    main { padding: 24px 16px 48px; }
+    .item-title { font-size: 18px; }
+    .list-grid { grid-template-columns: 1fr; }
+    .list-item { padding: 14px 12px; }
+    .list-item-thumb { width: 48px; height: 48px; }
+    .list-title-ja { font-size: 22px; }
+    .meta-label { width: 56px; font-size: 9px; }
+    .meta-value { font-size: 13px; }
+    .topic-label { font-size: 12px; }
+    .topic-text { font-size: 12px; line-height: 1.9; }
+  }
+
+  /* Animation */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .animate-in { animation: fadeUp 0.5s ease forwards; }
+  .animate-in.delay-1 { animation-delay: 0.08s; opacity: 0; }
+  .animate-in.delay-2 { animation-delay: 0.16s; opacity: 0; }
+  .animate-in.delay-3 { animation-delay: 0.24s; opacity: 0; }
+  .animate-in.delay-4 { animation-delay: 0.32s; opacity: 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-title">
+    <span class="header-title-ja">大麻布コレクション</span>
+    <span class="header-title-main" id="header-subtitle">資料詳細</span>
+  </div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
+</header>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<main id="content"></main>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<footer>
+  <span class="footer-text" id="footer-text">大麻布資料展示</span>
+</footer>
+
+<script>
+// ─── TOPICS（行2=ラベル / 行3=解説）─────────────────────────────────────────
+const TOPICS = [
+  {
+    label_ja: "大麻布とは",
+    label_en: "About Hemp Cloth",
+    desc_ja: "江戸時代に木綿が普及する以前は、日本人にとって最も身近な布は麻（大麻や苧麻）であった。庶民から上流階級に至るまで幅広く着用されていた。また衣服だけではなく、繊維が耐水性に優れたことから、縄や網など生活の道具にも広く使用されてきた。\n\n大麻は、桑科に属す一年草本で、日本列島の気候風土に適した草木繊維である。大麻繊維を用いて作られた大麻布は、水に浸し、天日に晒すことを繰り返すことで白く柔らかくなるという特性がある。\n\nしかし、戦後の昭和23年（1948年）、GHQの指示を受けた日本政府により大麻取締法が制定・施行されると、大麻栽培は免許制度へ移行し、国内の生産量は急速に減少した。また紡績に敵さなかったことにより、日本の中で、大麻布は徐々に姿を消していった。",
+    desc_en: "Before cotton became widespread in the Edo period, the most familiar cloth for Japanese people was asa—hemp and ramie—worn by everyone from commoners to the upper classes. Beyond clothing, its fiber's excellent water resistance made it widely used for daily tools such as rope and netting.\n\nHemp is an annual herbaceous plant of the mulberry family, a plant fiber well-suited to the Japanese climate. Hemp cloth made from hemp fiber has the characteristic of becoming white and soft through repeated soaking in water and sun-bleaching.\n\nHowever, when the Cannabis Control Act was enacted and enforced in 1948 under GHQ directive, hemp cultivation moved to a licensing system and domestic production declined rapidly. As hemp fiber was also unsuited to machine spinning, hemp cloth gradually disappeared from Japan."
+  },
+  {
+    label_ja: "歴史",
+    label_en: "History",
+    desc_ja: "日本では、縄文時代早期（約1万年前）の福井県・鳥浜貝塚から、大麻の繊維片や種子が出土しており、極めて早い段階から繊維利用が行われていたことが知られている。また、大麻に加え、刺草（イラクサ）、苧麻（チョマ、日本名：カラムシ）などの草木繊維を総称して「麻」と呼び、さまざまな種類の草木が繊維として利用されてきた。",
+    desc_en: "In Japan, hemp fiber fragments and seeds have been excavated from the Torihama Shell Midden in Fukui Prefecture, dating to the early Jōmon period approximately 10,000 years ago—evidence that fiber use began at a remarkably early stage. Hemp together with nettle, ramie (choma, Japanese name: karamushi), and other plant fibers are collectively called 'asa,' and a wide variety of plants have been used as textile fibers throughout history."
+  },
+  {
+    label_ja: "信仰",
+    label_en: "Ritual and Faith",
+    desc_ja: "大麻繊維は、日本では神聖な植物として、神道の信仰において欠かすことができない草木繊維である。現代でも群馬県岩島地区などで栽培されており、天皇即位の儀式で着用される装束や神宮の祭祀に用いられている。",
+    desc_en: "Hemp fiber is still cultivated today in areas such as the Iwashima district of Gunma Prefecture, and is used in the ceremonial robes worn at Imperial accession rites and in Shinto shrine rituals. In Japan, hemp is revered as a sacred plant and remains an indispensable fiber in Shinto religious practice."
+  },
+  {
+    label_ja: "近江晒",
+    label_en: "Ōmi-sarashi (Shiro-Takamiya)",
+    desc_ja: "近江（滋賀県）の産地を示す「南郡曝平大工曲」の朱印がある大麻布の着物。近江での大麻布の生産は、井伊家によって江戸中期から始まったとみられる。近江晒（しろ高宮）と呼ばれる。近世麻布研究所の繊維検査の結果、近江晒は、大麻布であることがわかっている。武士階級の男性が着用したと考えられる着物と、それを解いた裂地。\n\n特に近江晒は、江戸時代の商品学書『萬金産業袋』（三宅也来著／1732年）に「和らかきをいとはぬ人のお召地には、是に勝るはあらじ」と記され、その特筆すべき柔らかな風合いが紹介されていたほどである。",
+    desc_en: "These hemp kimonos bear the red seal indicating origin in Ōmi Province (Shiga Prefecture). Hemp cloth production in Ōmi is believed to have begun under the Ii clan in the mid-Edo period and is known as Ōmi-sarashi (Shiro-Takamiya). Fiber testing by the Kinsei Asafu Research Institute has confirmed that Ōmi-sarashi is genuine hemp cloth. The collection includes garments believed to have been worn by samurai-class men, as well as cloth cut from disassembled kimonos.\n\nŌmi-sarashi was praised in the 1732 commercial encyclopedia Mankin Sangyō Bukuro: 'For those who prize softness above all, there is nothing finer'—a testament to its remarkably soft texture."
+  },
+  {
+    label_ja: "奈良県の大麻布",
+    label_en: "Hemp Cloth of Nara",
+    desc_ja: "奈良県で生産・晒し加工されていた奈良晒は「麻の最上は南都なり」と称されるほどの最高品質の苧麻布であった。江戸時代に入ると幕府によって御用品として認められ、「南都曝平大工曲」の朱印のない晒布の売買が禁じられるほどの一級品として認められていた。しかし明治時代には、日本全土で木綿や絹の生産量が増したことや、原料である苧麻の入手難や価格高騰も重なり、明治12年（1879年）頃以降は大麻を素材とした麻布の生産に移行していった。本資料は、この転換期以降に奈良県にて生産された大麻布の反物（未使用）である。",
+    desc_en: "Nara-sarashi, bleached cloth produced and processed in Nara Prefecture, was regarded as the finest ramie cloth of its time, celebrated as 'the best hemp in all the land.' Entering the Edo period, it was recognized by the shogunate as an official product, and bolts without the 'Nanto' seal were prohibited from sale. However, in the Meiji era, as cotton and silk production increased throughout Japan and raw ramie became difficult to obtain at rising prices, production shifted to hemp fiber from around 1879. This bolt represents Nara-made hemp cloth produced after that transition, preserved unused."
+  },
+  {
+    label_ja: "洗い張りのために端縫いした反物",
+    label_en: "Cloth Hemmed for Laundering",
+    desc_ja: "大麻布の着物を、洗い張りのために端縫いし、反物の状態にした布。洗い張りとは、着物を一度解いて反物の状態に戻し、水洗いをしたあとに張り板や伸子針で布を整える作業を行う、伝統的な着物の手入れの技法である。この工程を経ることで、布地の風合いや張りが蘇り、再び真新しい着物のように仕立て直すことができる。着物を「解いては仕立て、洗っては整える」というサイクルを繰り返すことで、一枚の布が何世代にもわたって受け継ぐことも可能である。",
+    desc_en: "A hemp kimono that has been unstitched and edge-sewn back into bolt form for laundering. 'Arai-hari' is a traditional technique of kimono care: the garment is fully disassembled, washed, and then stretched on boards or with shinshi needles to restore its shape. Through this process the texture and body of the cloth are revived, and it can be resewn like a fresh new kimono. By repeating the cycle of unstitching and resewing, washing and restoring, a single piece of cloth could be handed down across generations."
+  },
+  {
+    label_ja: "開田大麻",
+    label_en: "Kaida Hemp",
+    desc_ja: "長野県木曽町開田高原（旧開田村）で生産された大麻布の反物。未使用のまま保管されていた。開田高原はほぼ全域が標高1,000メートル以上に位置する冷涼な高原地帯。一般に大麻の栽培には冷涼な気候が適しているとされることから、栽培に適していたと考えられる。本資料は、昭和23年（1948年）、大麻取締法が制定・施行された直後に生産されたものと見られ、長きにわたる日本の大麻布生産の歴史における終わりの時代を物語る貴重な資料である。",
+    desc_en: "A bolt of hemp cloth produced in the Kaida Highlands of Kiso Town, Nagano Prefecture (formerly Kaida Village), preserved unused. The Kaida Highlands lie almost entirely above 1,000 meters elevation—a cool highland zone. As hemp cultivation is generally considered to thrive in cool climates, the area was well suited to its growing. This bolt is believed to have been produced shortly after the Cannabis Control Act was enacted and enforced in 1948, and stands as a precious record of the closing era in Japan's long history of hemp cloth production."
+  },
+  {
+    label_ja: "オクソザックリ",
+    label_en: "Okuso-zakkuri",
+    desc_ja: "オクソザックリは、明治時代まで、福井県、石川県、岐阜県のあたりで作られ、使われてきた仕事着である。大麻の苧の粗皮を削り取った際に繊維質が残ったものを「オクソ（苧屑）」と呼ぶ。本来は捨てるオクソを緯糸として再利用し、布として織り上げたものである。",
+    desc_en: "Okuso-zakkuri is a work garment made and used until the Meiji period in the regions of Fukui, Ishikawa, and Gifu. 'Okuso' refers to the fibrous residue left after scraping the coarse outer bark from hemp stalks—material normally discarded. This cloth is woven by repurposing those waste fibers as weft threads."
+  },
+  {
+    label_ja: "被衣（かづき）",
+    label_en: "Kazuki (Head Veil)",
+    desc_ja: "被衣とは、平安時代以降、公家・武家の女性が外出の際に着物を頭から被り顔や姿を覆い隠した装い。古語で「かづく」（頭から被るの意）に由来するとする説がある。被衣には、絹の絽地に家紋を染めたものが用いられた。江戸時代に入ると、被るために襟肩を通常の着物より20cmほど前に下げるように仕立てられた着物も現れた。\n\n本資料は、その時代に作られたものである。江戸時代には顔を完全に隠すことが刺客などによる悪用を招くとして早くに使用が禁止された。",
+    desc_en: "Kazuki refers to the practice, from the Heian period onward, in which noblewomen and samurai women draped a kimono over the head when going out, concealing the face and figure. The word is thought to derive from the classical verb 'kazuku' (to drape over the head). Kazuki garments were made in silk gauze dyed with family crests. In the Edo period, purpose-made garments also appeared, tailored with the collar shoulder seam set approximately 20 cm further forward than a standard kimono to facilitate draping.\n\nThis piece dates from that era. In the Edo period their use was banned early on, as completely concealing the face was seen as an invitation to misuse by assassins and others."
+  },
+  {
+    label_ja: "打敷（うちしき）",
+    label_en: "Uchishiki (Altar Cloth)",
+    desc_ja: "打敷の裏生地に使用された大麻布。打敷とは、寺院・仏壇において仏前の卓を荘厳する布製の仏具である。死者の供養のために、故人が生前に愛用した着物を解いて打敷の表地に仕立てることがあった。裏には大麻布などをつけ、年号や施主の情報を記す場合（表に記されている場合もある）があり、大麻布が生産された明確な時代がわかる貴重な資料である。",
+    desc_en: "Hemp cloth used as the lining of an uchishiki—a decorative cloth placed before a Buddhist image to adorn the altar table. A beloved kimono of the deceased was sometimes disassembled and refashioned as the outer face of an uchishiki as an act of memorial. Inscriptions of the year and donor's name were sometimes written on the lining (or occasionally on the front), making these pieces valuable dated records of hemp cloth production."
+  },
+  {
+    label_ja: "染め帷子",
+    label_en: "Dyed Hemp Garment",
+    desc_ja: "麻や絹を用いた裏地のない単衣（ひとえ）の夏の着物。帷子とは本来、麻布で仕立てた単衣を指し、そこに染色を施したものを染め帷子という。武家や裕福な町人の夏の礼装として江戸時代に広く用いられ、辻が花・友禅・絞りなど様々な染め技法が駆使された。麻の清涼感と華やかな意匠を兼ね備えた夏の晴れ着として珍重され、茶の湯の場でも好まれた。",
+    desc_en: "An unlined summer kimono of hemp or silk. 'Katabira' originally referred to a single-layer garment of hemp cloth; when dyed it becomes a 'some-katabira.' Widely used as summer formal wear in the Edo period, these garments showcased dyeing techniques such as tsujigahana, Yūzen, and shibori. Prized as festive summer dress combining the coolness of hemp with vibrant decoration, they were also favored in tea ceremony settings."
+  },
+  {
+    label_ja: "砧で打った光沢",
+    label_en: "Fulled Luster",
+    desc_ja: "この大麻布は、砧（キヌタ）で打った光沢がある。砧は、もともと洗濯した布を柔らかくし、皺をのばすための生活の道具。苧麻、大麻、絹などの布に、独特の艶を出すためにも用いられる。現代でも、宮古上布などが砧を打った光沢のある布として知られている。",
+    desc_en: "This hemp cloth has been given a sheen by fulling with a kinuta (wooden mallet and block). The kinuta was originally a domestic implement for softening washed cloth and removing wrinkles, but is also used to impart a distinctive luster to ramie, hemp, and silk fabrics. Today, Miyako-jofu is among the best-known cloths recognized for the gloss achieved through kinuta fulling."
+  }
+];
+
+// ─── 参考画像データ
+const REF_IMAGES = {
+  "ref01": {
+    file: "ref01.jpg",
+    credit: "Nishikawa Sukenobu, Picture Book: Mount Asaka (Ehon Asakayama), 1739. The Metropolitan Museum of Art, Rogers Fund, 1918 (JIB35). Public domain.",
+    caption_ja: "頭から被衣（かづき）を被る江戸時代の女性",
+    caption_en: "An Edo-period woman wearing a kazuki head veil"
+  },
+  "ref02": {
+    file: "ref02.jpg",
+    credit: "Suzuki Harunobu, The Cloth-Fulling Jewel River, Settsu Province, ca. 1766–67. Courtesy of The Metropolitan Museum of Art, Open Access (Public Domain).",
+    caption_ja: "砧で布を打つ様子を描いた浮世絵",
+    caption_en: "Ukiyo-e depicting cloth being beaten on a kinuta fulling block"
+  }
+};
+
+// ─── ITEMS
+// topics: 12トピックの表示フラグ [大麻布とは,歴史,信仰,しろ高宮,奈良県,洗い張り,開田,オクソ,被衣,打敷,染め帷子,砧]
+// 0=非表示, 1=アコーディオン, 3=固定表示
+// ref_image: 参考画像キー（REF_IMAGESのキー）or null
+const ITEMS = {
+  "1":    { ja: "着物（白・南郡印あり）", en: "White Kimono with Nangun Seal", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代中期〜後期（1700年代〜1800年代頃）", period_en: "Mid–Late Edo Period (c. 1700s–1800s)", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "1.jpg",    topics: [1,1,1,3,0,0,0,0,0,0,0,0], ref_image: null },
+  "2":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代〜明治初期（1603〜1900年頃）", period_en: "Edo–Early Meiji (c. 1603–1900)", region_ja: "", region_en: "", image: "2.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "3":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代〜明治初期（1603〜1900年頃）", period_en: "Edo–Early Meiji (c. 1603–1900)", region_ja: "", region_en: "", image: "3.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "4":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代〜明治初期（1603〜1900年頃）", period_en: "Edo–Early Meiji (c. 1603–1900)", region_ja: "", region_en: "", image: "4.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "5":    { ja: "着物（白・粗めの糸）", en: "White Kimono with Coarse Yarn", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代〜明治初期（1603〜1900年頃）", period_en: "Edo–Early Meiji (c. 1603–1900)", region_ja: "", region_en: "", image: "5.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "6":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代〜明治初期（1603〜1900年頃）", period_en: "Edo–Early Meiji (c. 1603–1900)", region_ja: "", region_en: "", image: "6.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "7":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代〜明治初期（1603〜1900年頃）", period_en: "Edo–Early Meiji (c. 1603–1900)", region_ja: "", region_en: "", image: "7.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "8":    { ja: "着物（白）", en: "White Kimono", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代〜明治初期（1603〜1900年頃）", period_en: "Edo–Early Meiji (c. 1603–1900)", region_ja: "", region_en: "", image: "8.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "9":    { ja: "着物（白・家紋の刺繍あり）", en: "White Kimono with Family Crest Embroidery", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代〜明治初期（1603〜1900年頃）", period_en: "Edo–Early Meiji (c. 1603–1900)", region_ja: "", region_en: "", image: "9.jpg",    topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "10":   { ja: "着物（白・補修跡あり）", en: "White Kimono with Repair Traces", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代〜明治初期（1603〜1900年頃）", period_en: "Edo–Early Meiji (c. 1603–1900)", region_ja: "", region_en: "", image: "10.jpg",   topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "11":   { ja: "反物（未仕立て・南都印）", en: "Bolt of Cloth with Nanto Seal", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "明治時代（1868〜1912年）", period_en: "Meiji Period (1868–1912)", region_ja: "奈良県", region_en: "Nara Prefecture", image: "11.jpg",   topics: [1,1,1,0,3,0,0,0,0,0,0,0], ref_image: null },
+  "12":   { ja: "反物（未仕立て・南郡印）", en: "Bolt of Cloth with Nangun Seal", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代中期〜後期（1700年代〜1800年代初期頃）", period_en: "Mid–Late Edo Period (c. 1700s–early 1800s)", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "12.jpg",   topics: [1,1,1,3,0,0,0,0,0,0,0,0], ref_image: null },
+  "13":   { ja: "洗い張り（張物・南郡印）", en: "Stretched Cloth with Nangun Seal", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代（1603〜1868年）", period_en: "Edo Period (1603–1868)", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "13.jpg",   topics: [1,1,1,3,0,3,0,0,0,0,0,0], ref_image: null },
+  "14":   { ja: "反物（未仕立て・開田麻布）", en: "Bolt of Cloth from Kaida", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "1950年代", period_en: "1950s", region_ja: "長野県", region_en: "Nagano Prefecture", image: "14.jpg",   topics: [1,1,1,0,0,0,3,0,0,0,0,0], ref_image: null },
+  "15":   { ja: "打敷の裏地", en: "Lining of Altar Cloth", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "享保17年（1732年）", period_en: "Kyōhō 17 (1732)", region_ja: "", region_en: "", image: "15.jpg",   topics: [1,1,1,0,0,0,0,0,0,3,0,0], ref_image: null },
+  "16":   { ja: "打敷の裏地", en: "Lining of Altar Cloth", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "天明4年（1784年）", period_en: "Tenmei 4 (1784)", region_ja: "", region_en: "", image: "16.jpg",   topics: [1,1,1,0,0,0,0,0,0,3,0,0], ref_image: null },
+  "17":   { ja: "打敷の裏地", en: "Lining of Altar Cloth", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "慶應3年（1867年）", period_en: "Keiō 3 (1867)", region_ja: "", region_en: "", image: "17.jpg",   topics: [1,1,1,0,0,0,0,0,0,3,0,3], ref_image: "ref02" },
+  "18":   { ja: "打敷の裏地", en: "Lining of Altar Cloth", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "文政4年（1821年）", period_en: "Bunsei 4 (1821)", region_ja: "", region_en: "", image: "18.jpg",   topics: [1,1,1,0,0,0,0,0,0,3,0,0], ref_image: null },
+  "18_2": { ja: "反物", en: "Bolt of Cloth", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代中期〜明治初期（1700年代〜1868年頃）", period_en: "Mid Edo–Early Meiji (c. 1700s–1868)", region_ja: "", region_en: "", image: "18_2.jpg", topics: [1,1,1,0,0,0,0,0,0,0,0,0], ref_image: null },
+  "19":   { ja: "オクソザックリ", en: "Okuso-zakkuri (Work Garment)", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "明治時代（1868〜1912年）", period_en: "Meiji Period (1868–1912)", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "19.jpg",   topics: [1,1,1,0,0,0,0,3,0,0,0,0], ref_image: null },
+  "20":   { ja: "被衣（かづき）", en: "Kazuki (Head Veil)", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代（1603〜1868年）", period_en: "Edo Period (1603–1868)", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "20.jpg",   topics: [1,1,1,0,0,0,0,0,3,0,0,0], ref_image: "ref01" },
+  "予2":  { ja: "染め帷子", en: "Dyed Hemp Garment", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代（1603〜1868年）", period_en: "Edo Period (1603–1868)", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "21.jpg",   topics: [1,1,1,0,0,0,0,0,0,0,3,0], ref_image: null },
+  "21":   { ja: "裂", en: "Textile Fragment", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代（1603〜1868年）", period_en: "Edo Period (1603–1868)", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "22.jpg",   topics: [1,1,1,0,0,0,0,0,0,0,0,3], ref_image: null },
+  "22":   { ja: "裂", en: "Textile Fragment", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代（1603〜1868年）", period_en: "Edo Period (1603–1868)", region_ja: "滋賀県", region_en: "Shiga Prefecture", image: "予2.jpg",  topics: [1,1,1,0,0,0,0,0,0,0,0,3], ref_image: null },
+};
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let currentLang = 'ja';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-ja').classList.toggle('active', lang === 'ja');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  renderPage();
+}
+
+function openLightbox(src, alt) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox-img').alt = alt;
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+});
+
+function toggleTopic(el) {
+  const item = el.closest('.topic-item');
+  item.classList.toggle('open');
+}
+
+function openLightbox(src, alt) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox-img').alt = alt;
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+function getItemId() {
+  return new URLSearchParams(window.location.search).get('id');
+}
+
+function renderPage() {
+  const id = getItemId();
+  const main = document.getElementById('content');
+  const headerSub = document.getElementById('header-subtitle');
+  const footerText = document.getElementById('footer-text');
+  const isJa = currentLang === 'ja';
+
+  // LIST VIEW
+  if (!id) {
+    main.classList.add('list-view');
+    headerSub.textContent = isJa ? '資料一覧' : 'All Items';
+    footerText.textContent = isJa ? '大麻布資料展示' : 'Hemp Textile Collection';
+    const count = Object.keys(ITEMS).length;
+    const gridHtml = Object.entries(ITEMS).map(([key, item]) => {
+      const title = isJa ? item.ja : item.en;
+      const period = isJa ? item.period_ja : item.period_en;
+      const region = isJa ? item.region_ja : item.region_en;
+      const meta = [period, region].filter(Boolean).join('　');
+      const displayKey = key === '予2' ? '予' : key;
+      const thumbHtml = item.image
+        ? `<img src="images/${item.image}" alt="${title}" onerror="this.parentElement.innerHTML='<span class=\\'list-item-thumb-placeholder\\'>▪</span>'">`
+        : `<span class="list-item-thumb-placeholder">▪</span>`;
+      return `
+        <a class="list-item" href="?id=${encodeURIComponent(key)}">
+          <div class="list-item-thumb">${thumbHtml}</div>
+          <div class="list-item-body">
+            <div class="list-item-num">No. ${displayKey}</div>
+            <div class="list-item-title">${title}</div>
+            <div class="list-item-meta">${meta}</div>
+          </div>
+          <span class="list-item-arrow">›</span>
+        </a>`;
+    }).join('');
+    main.innerHTML = `
+      <div class="list-header animate-in">
+        <h1 class="list-title-ja">${isJa ? '大麻布コレクション' : 'Hemp Textile Collection'}</h1>
+        <p class="list-title-en">${isJa ? 'Hemp Textile Collection' : '大麻布コレクション'}</p>
+        <p class="list-count">${isJa ? `全 ${count} 点` : `${count} items`}</p>
+      </div>
+      <div class="list-grid">${gridHtml}</div>`;
+    return;
+  }
+
+  // NOT FOUND
+  if (!ITEMS[id]) {
+    main.classList.remove('list-view');
+    main.innerHTML = `
+      <div class="animate-in" style="text-align:center;padding:80px 24px;">
+        <p style="font-size:13px;letter-spacing:0.1em;color:var(--text-muted);">
+          ${isJa ? '資料が見つかりません。' : 'Item not found.'}
+        </p>
+        <a href="?" style="display:inline-block;margin-top:20px;font-size:12px;color:var(--accent);letter-spacing:0.1em;">
+          ${isJa ? '← 一覧へ戻る' : '← Back to list'}
+        </a>
+      </div>`;
+    return;
+  }
+
+  // ITEM DETAIL
+  main.classList.remove('list-view');
+  const item = ITEMS[id];
+  headerSub.textContent = isJa ? '資料詳細' : 'Item Detail';
+  footerText.textContent = isJa ? '大麻布資料展示' : 'Hemp Textile Collection';
+
+  const title = isJa ? item.ja : item.en;
+  const fiber = isJa ? item.fiber_ja : item.fiber_en;
+  const period = isJa ? item.period_ja : item.period_en;
+  const region = isJa ? item.region_ja : item.region_en;
+  const displayId = id === '予2' ? '予' : id;
+
+  const imageHtml = item.image
+    ? `<img src="images/${item.image}" alt="${title}" onclick="openLightbox('images/${item.image}', '${title}')" onerror="this.parentElement.innerHTML='<div class=\\'image-placeholder\\'><span class=\\'image-placeholder-icon\\'>⬜</span><span class=\\'image-placeholder-text\\'>${item.image}</span></div>'">`
+    : `<div class="image-placeholder"><span class="image-placeholder-icon">⬜</span><span class="image-placeholder-text">${isJa ? '画像準備中' : 'Image coming soon'}</span></div>`;
+
+  const metaRows = [
+    { label: isJa ? '繊維' : 'Fiber', value: fiber },
+    period ? { label: isJa ? '年代' : 'Period', value: period } : null,
+    region ? { label: isJa ? '地域' : 'Region', value: region } : null,
+  ].filter(Boolean);
+  const metaHtml = metaRows.map(r => `
+    <div class="meta-row">
+      <span class="meta-label">${r.label}</span>
+      <span class="meta-value">${r.value}</span>
+    </div>`).join('');
+
+  // 固定解説（3）
+  const fixedTopics = TOPICS
+    .filter((t, i) => item.topics[i] === 3)
+    .map(t => {
+      const text = isJa ? t.desc_ja : t.desc_en;
+      const paras = text.split('\n\n').map(p => `<p class="fixed-topic-text">${p}</p>`).join('');
+      return `
+    <div class="fixed-topic">
+      <p class="fixed-topic-label">${isJa ? t.label_ja : t.label_en}</p>
+      ${paras}
+    </div>`;
+    }).join('');
+
+  // 参考画像
+  let refImageHtml = '';
+  if (item.ref_image && REF_IMAGES[item.ref_image]) {
+    const ref = REF_IMAGES[item.ref_image];
+    refImageHtml = `
+    <div class="ref-image-block">
+      <img src="images/${ref.file}" alt="${isJa ? ref.caption_ja : ref.caption_en}" onclick="openLightbox('images/${ref.file}', '${isJa ? ref.caption_ja : ref.caption_en}')" onerror="this.style.display='none'">
+      <p class="ref-image-caption">${isJa ? ref.caption_ja : ref.caption_en}</p>
+      <p class="ref-image-credit">${ref.credit}</p>
+    </div>`;
+  }
+
+  // アコーディオン（1）
+  const topicsHtml = TOPICS
+    .filter((t, i) => item.topics[i] === 1)
+    .map(t => `
+    <div class="topic-item">
+      <button class="topic-trigger" onclick="toggleTopic(this)">
+        <span class="topic-label">${isJa ? t.label_ja : t.label_en}</span>
+        <span class="topic-arrow">＋</span>
+      </button>
+      <div class="topic-body">
+        <p class="topic-text">${isJa ? t.desc_ja : t.desc_en}</p>
+      </div>
+    </div>`).join('');
+
+  const accordionSection = topicsHtml ? `
+    <div class="topics-section animate-in delay-4">
+      <p class="topics-heading">${isJa ? '関連解説' : 'Related Topics'}</p>
+      ${topicsHtml}
+    </div>` : '';
+
+  main.innerHTML = `
+    <a href="?" style="display:block;font-size:11px;letter-spacing:0.15em;color:var(--text-muted);text-decoration:none;margin-bottom:16px;">
+      ← ${isJa ? '一覧へ戻る' : 'Back to list'}
+    </a>
+    <div class="item-badge animate-in">
+      <span class="item-num-label">No.</span>
+      <span class="item-num">${displayId}</span>
+    </div>
+    <h1 class="item-title animate-in delay-1">${title}</h1>
+    <p class="item-title-en animate-in delay-1">${isJa ? item.en : item.ja}</p>
+    <div class="item-image-wrap animate-in delay-2">${imageHtml}</div>
+    <div class="meta-section animate-in delay-3">${metaHtml}</div>
+    ${fixedTopics ? `<div class="fixed-topics-section animate-in delay-4">${fixedTopics}${refImageHtml}</div>` : ''}
+    ${accordionSection}`;
+}
+
+renderPage();
+</script>
+</body>
+</html>
