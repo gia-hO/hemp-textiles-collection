@@ -101,6 +101,7 @@
   .list-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); overflow: hidden; }
   .list-item { background: var(--paper); padding: 16px; text-decoration: none; color: inherit; display: flex; gap: 12px; align-items: flex-start; transition: background 0.15s; -webkit-tap-highlight-color: transparent; min-width: 0; }
   .list-item:hover, .list-item:active { background: var(--paper-warm); }
+  .list-item-ghost { background: var(--bg); cursor: default; }
   .list-item-thumb { width: 52px; height: 52px; background: var(--paper-warm); border: 1px solid var(--rule); flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
   .list-item-thumb img { width: 100%; height: 100%; object-fit: cover; }
   .list-item-thumb-placeholder { font-size: 18px; opacity: 0.2; }
@@ -247,20 +248,20 @@
 </footer>
 
 <script>
-// ─── TOPICS（行2=ラベル / 行3=解説）─────────────────────────────────────────
-// 9トピック: [大麻布とは,歴史,信仰,近江晒,洗い張り,オクソザックリ,被衣,打敷,砧]
+// ─── TOPICS（10トピック）─────────────────────────────────────────────────────
+// [大麻布とは, 長い歴史, 信仰, 近江晒（南郡印）, 近江晒（御召曝所印）, 洗い張り, オクソザックリ, 被衣, 打敷裏地, 裂（砧仕上げ）]
 const TOPICS = [
   {
     label_ja: "大麻布とは",
     label_en: "About Hemp Cloth",
-    desc_ja: "大麻は、桑科に属す一年草本で、日本列島に古来から栽培されてきた草木繊維である。大麻繊維を用いて作られた大麻布は、水に浸し、天日に晒すことを繰り返すことで白く柔らかくなるという特性がある。\n\n江戸時代に木綿が普及する以前は、日本人にとって最も身近な布は麻（大麻や苧麻）であった。庶民から上流階級に至るまで幅広く着用されていた。また衣服だけではなく、繊維が耐水性に優れたことから、縄や網など生活の道具にも広く使用されてきた。\n\nしかし、戦後の昭和23年（1948年）、GHQの指令を受けた日本政府により大麻取締法が制定・施行されると、大麻栽培は免許制度へ移行し、国内の生産量は急速に減少した。また紡績に敵さなかったことにより、日本の中で、大麻布は徐々に姿を消していった。",
-    desc_en: "Hemp is an annual herbaceous plant of the mulberry family, cultivated in the Japanese archipelago since ancient times. Hemp cloth made from hemp fiber has the characteristic of becoming white and soft through repeated soaking in water and sun-bleaching.\n\nBefore cotton became widespread in the Edo period, the most familiar cloth for Japanese people was asa—hemp and ramie—worn by everyone from commoners to the upper classes. Beyond clothing, its fiber's excellent water resistance made it widely used for daily tools such as rope and netting.\n\nHowever, when the Cannabis Control Act was enacted and enforced in 1948 under GHQ directive, hemp cultivation moved to a licensing system and domestic production declined rapidly. As hemp fiber was also unsuited to machine spinning, hemp cloth gradually disappeared from Japan."
+    desc_ja: "大麻は、桑科に属す一年草本で、日本列島に古くから栽培されてきた草木繊維である。大麻繊維を用いて作られた大麻布は、水に浸し、天日に晒すことを繰り返すことで白く柔らかくなるという特性がある。\n\n江戸時代に木綿が普及する以前は、日本人にとって最も身近な布は麻（大麻や苧麻）であった。庶民から上流階級に至るまで幅広く着用されていた。また衣服だけではなく、繊維が耐水性に優れたことから、縄や網など生活の道具にも広く使用されてきた。\n\nしかし、戦後の昭和23年（1948年）、GHQの指令を受けた日本政府により大麻取締法が制定・施行されると、大麻栽培は免許制度へ移行し、国内の生産量は急速に減少した。また紡績に敵さなかったことにより、日本の中で、大麻布は徐々に姿を消していった。",
+    desc_en: "Hemp is an annual herbaceous plant of the mulberry family, cultivated in the Japanese archipelago since ancient times. Hemp cloth made from hemp fiber has the characteristic of becoming white and soft through repeated soaking in water and sun-bleaching.\n\nBefore cotton became widespread from the late sixteenth to early seventeenth centuries, the most familiar cloth for Japanese people was <em>asa</em> (hemp and ramie), worn by everyone from commoners to the upper classes. Beyond clothing, its fiber's excellent water resistance made it widely used for daily tools such as rope and netting.\n\nHowever, when the Cannabis Control Act was enforced in 1948 under GHQ command, hemp cultivation moved to a licensing system and domestic production declined rapidly. As hemp fiber was also unsuited to machine spinning, hemp cloth gradually disappeared from Japan."
   },
   {
     label_ja: "長い歴史",
-    label_en: "A Long History",
+    label_en: "Long History",
     desc_ja: "日本では、縄文時代早期（約1万年前）の福井県・鳥浜貝塚から、大麻の繊維片や種子が出土しており、極めて早い段階から繊維利用が行われていたことが知られている。また、大麻に加え、刺草（イラクサ）、苧麻（チョマ、日本名：カラムシ）などの草木繊維を総称して「麻」と呼び、さまざまな種類の草木が繊維として利用されてきた。",
-    desc_en: "In Japan, hemp fiber fragments and seeds have been excavated from the Torihama Shell Midden in Fukui Prefecture, dating to the early Jōmon period approximately 10,000 years ago—evidence that fiber use began at a remarkably early stage. Hemp together with nettle, ramie (choma, Japanese name: karamushi), and other plant fibers are collectively called 'asa,' and a wide variety of plants have been used as textile fibers throughout history."
+    desc_en: "In Japan, hemp fiber fragments and seeds have been excavated from the Torihama Shell Midden in Fukui Prefecture, dating to the early Jōmon period approximately 10,000 years ago—evidence that fiber use began at a remarkably early stage. Hemp together with nettle, ramie (<em>choma</em>, Japanese name: <em>karamushi</em>), and other plant fibers are collectively called <em>asa</em>, and a wide variety of plants have been used as textile fibers throughout history."
   },
   {
     label_ja: "信仰",
@@ -269,40 +270,46 @@ const TOPICS = [
     desc_en: "Hemp fiber is still cultivated today in areas such as the Iwashima district of Gunma Prefecture, and is used in the ceremonial robes worn at Imperial accession rites and in Shinto shrine rituals. In Japan, hemp is revered as a sacred plant and remains an indispensable fiber in Shinto religious practice."
   },
   {
-    label_ja: "近江晒",
-    label_en: "Ōmi-sarashi (Shiro-Takamiya)",
-    desc_ja: "近江（滋賀県）の産地を示す「南郡曝平大工曲」の朱印がある大麻布の着物。近江での大麻布の生産は、井伊家によって江戸中期から始まったとみられる。近江晒（しろ高宮）と呼ばれる。近世麻布研究所の繊維検査の結果、近江晒は、大麻布であることがわかっている。武士階級の男性が着用したと考えられる着物と、それを解いた裂地。\n\n特に近江晒は、江戸時代の商品学書『萬金産業袋』（三宅也来著／1732年）に「和らかきをいとはぬ人のお召地には、是に勝るはあらじ」と記され、その特筆すべき柔らかな風合いが紹介されていたほどである。",
-    desc_en: "These hemp kimonos bear the red seal indicating origin in Ōmi Province (Shiga Prefecture). Hemp cloth production in Ōmi is believed to have begun under the Ii clan in the mid-Edo period and is known as Ōmi-sarashi (Shiro-Takamiya). Fiber testing by the Kinsei Asafu Research Institute has confirmed that Ōmi-sarashi is genuine hemp cloth. The collection includes garments believed to have been worn by samurai-class men, as well as cloth cut from disassembled kimonos.\n\nŌmi-sarashi was praised in the 1732 commercial encyclopedia Mankin Sangyō Bukuro: 'For those who prize softness above all, there is nothing finer'—a testament to its remarkably soft texture."
+    label_ja: "近江晒（南郡印）",
+    label_en: "Ōmi-sarashi (Nangun Seal)",
+    desc_ja: "近江（滋賀県）の産地を示す「南郡曝平大工曲」の朱印がある大麻布の着物。近江での大麻布の生産は、井伊家によって江戸中期から始まったとみられる。近江晒（しろ高宮）と呼ばれる。武士階級の男性が着用したと考えられる着物と、それを解いた裂地。\n\n特に近江晒は、江戸時代の商品学書『萬金産業袋』（三宅也来著／1732年）に「和らかきをいとはぬ人のお召地には、是に勝るはあらじ」と記され、その特筆すべき柔らかな風合いが紹介されていたほどである。",
+    desc_en: "This hemp kimono bears a red ink seal certifying its origin in Ōmi Province (present-day Shiga Prefecture). <em>Ōmi-sarashi</em> production flourished in the mid-Edo period (c. 1680–1750) under the patronage of the Ii clan of the Hikone Domain. The collection includes garments believed to have been worn by samurai-class men.\n\n<em>Ōmi-sarashi</em> was highly praised in the 1732 commercial encyclopedia <em>Mankin Sangyō Bukuro</em>: \"For those who prize softness above all, there is nothing finer.\" This historical acclaim serves as a testament to the textile's remarkably supple texture."
+  },
+  {
+    label_ja: "近江晒（御召曝所印）",
+    label_en: "Ōmi-sarashi (Gosho Sarashisho Seal)",
+    desc_ja: "近江（滋賀県）の晒し場を示す「御召曝所」の朱印が残る大麻布の着物。近江での大麻布の生産は、井伊家によって江戸中期から始まったとみられる。近江晒（しろ高宮）と呼ばれる。近世麻布研究所の繊維検査の結果、近江晒は、大麻布であることがわかっている。武士階級の男性が着用したと考えられる着物と、それを解いた裂地。\n\n特に近江晒は、江戸時代の商品学書『萬金産業袋』（三宅也来著／1732年）に「和らかきをいとはぬ人のお召地には、是に勝るはあらじ」と記され、その特筆すべき柔らかな風合いが紹介されていたほどである。",
+    desc_en: "This kimono is made of hemp cloth bearing a red seal from the bleaching site in Ōmi (present-day Shiga Prefecture). <em>Ōmi-sarashi</em> production flourished in the mid-Edo period (c. 1680–1750) under the patronage of the Ii clan of the Hikone Domain. Fiber analysis conducted by the Kinsei Asafu Research Institute has confirmed that <em>Ōmi-sarashi</em> is hemp cloth. The collection includes garments believed to have been worn by samurai-class men.\n\n<em>Ōmi-sarashi</em> was highly praised in the 1732 commercial encyclopedia <em>Mankin Sangyō Bukuro</em>: \"For those who prize softness above all, there is nothing finer.\" This historical acclaim serves as a testament to the textile's remarkably supple texture."
   },
   {
     label_ja: "洗い張りのために端縫いした反物",
     label_en: "Cloth Hemmed for Laundering",
     desc_ja: "大麻布の着物を、洗い張りのために端縫いし、反物の状態にした布。洗い張りとは、着物を一度解いて反物の状態に戻し、水洗いをしたあとに張り板や伸子針で布を整える作業を行う、伝統的な着物の手入れの技法である。この工程を経ることで、布地の風合いや張りが蘇り、再び真新しい着物のように仕立て直すことができる。",
-    desc_en: "A hemp kimono that has been unstitched and edge-sewn back into bolt form for laundering. 'Arai-hari' is a traditional technique of kimono care: the garment is fully disassembled, washed, and then stretched on boards or with shinshi needles to restore its shape. Through this process the texture and body of the cloth are revived, and it can be resewn like a fresh new kimono."
+    desc_en: "This hemp kimono has been unstitched and the fabric pieces sewn edge-to-edge into a long bolt for laundering. This reflects the traditional care technique known as <em>arai-hari</em>: the garment is fully disassembled, washed, and then stretched using boards or <em>shinshi</em> (flexible bamboo needles) to restore its shape. This process rejuvenates the texture and body of the cloth, allowing it to be resewn as if it were a brand-new garment."
   },
   {
     label_ja: "オクソザックリ",
-    label_en: "Okuso-zakkuri",
+    label_en: "Okuso Zakkuri",
     desc_ja: "オクソザックリは、明治時代まで、福井県、石川県、岐阜県のあたりで作られ、使われてきた仕事着である。大麻の苧の粗皮を削り取った際に繊維質が残ったものを「オクソ（苧屑）」と呼ぶ。本来は捨てるオクソを緯糸として再利用し、布として織り上げたものである。",
-    desc_en: "Okuso-zakkuri is a work garment made and used until the Meiji period in the regions of Fukui, Ishikawa, and Gifu. 'Okuso' refers to the fibrous residue left after scraping the coarse outer bark from hemp stalks—material normally discarded. This cloth is woven by repurposing those waste fibers as weft threads."
+    desc_en: "<em>Okuso zakkuri</em> is a type of work clothing made and used until the Meiji period (1868–1912) in Fukui, Ishikawa, and Gifu Prefectures in central Honshu, Japan's main island. <em>Okuso</em> (literally, "flock of <em>o</em>") refers to fiber remnants produced when scraping the coarse outer bark off hemp stems. These flocks, usually discarded, are reused as the weft and woven into a textile."
   },
   {
     label_ja: "被衣（かづき）",
     label_en: "Kazuki (Head Veil)",
     desc_ja: "被衣とは、平安時代以降、公家・武家の女性が外出の際に着物を頭から被り顔や姿を覆い隠した装い。古語で「かづく」（頭から被るの意）に由来するとする説がある。被衣には、絹の絽地に家紋を染めたものが用いられた。江戸時代に入ると、被るために襟肩を通常の着物より20cmほど前に下げるように仕立てられた着物も現れた。\n\n本資料は、その時代に作られたものである。江戸時代には顔を完全に隠すことが刺客などによる悪用を招くとして早くに使用が禁止された。",
-    desc_en: "Kazuki refers to the practice, from the Heian period onward, in which noblewomen and samurai women draped a kimono over the head when going out, concealing the face and figure. The word is thought to derive from the classical verb 'kazuku' (to drape over the head). Kazuki garments were made in silk gauze dyed with family crests. In the Edo period, purpose-made garments also appeared, tailored with the collar shoulder seam set approximately 20 cm further forward than a standard kimono to facilitate draping.\n\nThis piece dates from that era. In the Edo period their use was banned early on, as completely concealing the face was seen as an invitation to misuse by assassins and others."
+    desc_en: "<em>Kazuki</em> refers to the practice, from the Heian period (794–1185) onward, in which noblewomen and samurai women draped a kimono over the head when going out, concealing the face and figure. The word is thought to derive from the classical verb <em>kazuku</em> (to drape over the head). <em>Kazuki</em> garments were made in silk gauze dyed with family crests. In the Edo period (1603–1868), purpose-made garments also appeared, tailored with the collar shoulder seam set approximately 20 cm further forward than a standard kimono to facilitate draping.\n\nThis piece dates from that era. In the Edo period, use of the <em>kazuki</em> was banned early on, as completely concealing the face was seen as an invitation to misuse by assassins and others."
   },
   {
-    label_ja: "打敷（うちしき）",
-    label_en: "Uchishiki (Altar Cloth)",
+    label_ja: "打敷（うちしき）の裏地",
+    label_en: "Lining of an Uchishiki (Buddhist Altar Cloth)",
     desc_ja: "打敷の裏生地に使用された大麻布。打敷とは、寺院・仏壇において仏前の卓に用いた布製の仏具である。死者の供養のために、故人が生前に愛用した着物を解いて打敷の表地に仕立て、裏地には大麻布などをつけた。年号や施主の情報を記し、大麻布が生産された明確な時代がわかる貴重な資料である。",
-    desc_en: "Hemp cloth used as the lining of an uchishiki—a decorative cloth placed on the altar table before a Buddhist image. A beloved kimono of the deceased was disassembled and refashioned as the outer face of an uchishiki, with hemp cloth attached as the lining. Inscriptions of the year and donor's name make these pieces valuable dated records of hemp cloth production."
+    desc_en: "This hemp cloth was used as the lining of an <em>uchishiki</em>—a decorative cloth placed on an altar table before the Buddha. A beloved kimono of the deceased was disassembled and refashioned as the outer face of an <em>uchishiki</em>, with hemp cloth attached as the lining. Inscriptions of the year and donor's name make these pieces valuable dated records of hemp cloth production."
   },
   {
-    label_ja: "砧で打った光沢",
-    label_en: "Fulled Luster",
+    label_ja: "裂（砧仕上げ）",
+    label_en: "Kire (Kinuta-Finished)",
     desc_ja: "この大麻布は、砧（キヌタ）で打った光沢がある。砧は、もともと洗濯した布を柔らかくし、皺をのばすための生活の道具。苧麻、大麻、絹などの布に、独特の艶を出すためにも用いられる。現代でも、宮古上布などが砧を打った光沢のある布として知られている。",
-    desc_en: "This hemp cloth has a distinctive sheen produced by beating with a kinuta (fulling block). The kinuta was originally a domestic tool used to soften laundered cloth and smooth out wrinkles. It is also used to impart a characteristic luster to fabrics such as ramie, hemp, and silk. Even today, Miyako-jofu is known as one of the lustrous cloths finished with kinuta beating."
+    desc_en: "This <em>kire</em> has a distinctive sheen produced by beating with a <em>kinuta</em> (fulling block). The <em>kinuta</em> is a tool originally used to soften laundered cloth and smooth out wrinkles; it was also used to impart a characteristic luster to fabrics such as ramie, hemp, and silk. <em>Miyako-jōfu</em> is among the textiles still celebrated today for the lustrous finish produced by <em>kinuta</em> beating."
   }
 ];
 
@@ -312,39 +319,41 @@ const REF_IMAGES = {
     file: "ref01.jpg",
     credit: "Nishikawa Sukenobu, Picture Book: Mount Asaka (Ehon Asakayama), 1739. The Metropolitan Museum of Art, Rogers Fund, 1918 (JIB35). Public domain.",
     caption_ja: "頭から被衣（かづき）を被る江戸時代の女性",
-    caption_en: "An Edo-period woman wearing a kazuki head veil"
+    caption_en: "An Edo-period woman wearing a <em>kazuki</em> head veil"
   },
   "ref02": {
     file: "ref02.jpg",
     credit: "Suzuki Harunobu, The Cloth-Fulling Jewel River, Settsu Province, ca. 1766–67. Courtesy of The Metropolitan Museum of Art, Open Access (Public Domain).",
-    caption_ja: "砧で布を打つ様子を描いた浮世絵",
-    caption_en: "Ukiyo-e depicting cloth being beaten on a kinuta fulling block"
+    caption_ja: "砧（きぬた）で布を打つ女性たち（摂津国多摩川）",
+    caption_en: "Women beating cloth with a <em>kinuta</em> fulling block at the Tama River in Settsu Province"
   }
 };
 
 // ─── ITEMS
-// topics: 9トピックの表示フラグ [大麻布とは,歴史,信仰,近江晒,洗い張り,オクソザックリ,被衣,打敷,砧]
+// topics: 10トピックの表示フラグ
+// [大麻布とは, 長い歴史, 信仰, 近江晒（南郡印）, 近江晒（御召曝所印）, 洗い張り, オクソザックリ, 被衣, 打敷裏地, 裂（砧仕上げ）]
 // 0=非表示, 1=アコーディオン, 3=固定表示
 const ITEMS = {
-  "1":  { ja: "打敷の裏地",                en: "Lining of Altar Cloth",             fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "享保17年（1732年）",                         period_en: "Kyōhō 17 (1732)",                       region_ja: "",              region_en: "",                         image: "1.jpg",  topics: [1,1,1,0,0,0,0,3,0], ref_image: null },
-  "2":  { ja: "打敷の裏地",                en: "Lining of Altar Cloth",             fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "天明4年（1784年）",                          period_en: "Tenmei 4 (1784)",                       region_ja: "",              region_en: "",                         image: "2.jpg",  topics: [1,1,1,0,0,0,0,3,0], ref_image: null },
-  "3":  { ja: "反物（未仕立て・南郡印）",  en: "Bolt of Cloth with Nangun Seal",    fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸中期〜後期（1700年代〜1800年代初期頃）", period_en: "Mid–Late Edo (c. 1700s–early 1800s)",    region_ja: "滋賀県",        region_en: "Shiga Prefecture",         image: "3.jpg",  topics: [1,1,1,3,0,0,0,0,0], ref_image: null },
-  "4":  { ja: "洗い張りの張物（南郡印）",  en: "Stretched Cloth with Nangun Seal",  fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸中期〜後期（1700年代〜1800年代頃）",    period_en: "Mid–Late Edo (c. 1700s–1800s)",         region_ja: "滋賀県",        region_en: "Shiga Prefecture",         image: "4.jpg",  topics: [1,1,1,3,3,0,0,0,0], ref_image: null },
-  "5":  { ja: "裂（砧による光沢あり）",      en: "Textile Fragment (with Kinuta Luster)",                  fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代（1603〜1868年）",                  period_en: "Edo Period (1603–1868)",                region_ja: "",              region_en: "",                         image: "5.jpg",  topics: [1,1,1,0,0,0,0,0,3], ref_image: "ref02" },
-  "6":  { ja: "オクソザックリ",            en: "Okuso-zakkuri (Work Garment)",      fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "明治時代（1868〜1912年）",                  period_en: "Meiji Period (1868–1912)",              region_ja: "福井県、石川県、岐阜県あたり", region_en: "Fukui, Ishikawa, Gifu area",  image: "6.jpg",  topics: [1,1,1,0,0,3,0,0,0], ref_image: null },
-  "7":  { ja: "着物（白・南郡印あり）",    en: "White Kimono with Nangun Seal",     fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸中期〜後期（1700年代〜1800年代頃）",    period_en: "Mid–Late Edo (c. 1700s–1800s)",         region_ja: "滋賀県",        region_en: "Shiga Prefecture",         image: "7.jpg",  topics: [1,1,1,3,0,0,0,0,0], ref_image: null },
-  "8":  { ja: "着物（白）",               en: "White Kimono",                      fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代〜明治初期（1603〜1900年頃）",      period_en: "Edo–Early Meiji (c. 1603–1900)",        region_ja: "",              region_en: "",                         image: "8.jpg",  topics: [1,1,1,0,0,0,0,0,0], ref_image: null },
-  "9":  { ja: "着物（白）",               en: "White Kimono",                      fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代〜明治初期（1603〜1900年頃）",      period_en: "Edo–Early Meiji (c. 1603–1900)",        region_ja: "",              region_en: "",                         image: "9.jpg",  topics: [1,1,1,0,0,0,0,0,0], ref_image: null },
-  "10": { ja: "着物（白・粗めの糸）",      en: "White Kimono with Coarse Yarn",     fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代〜明治初期（1603〜1900年頃）",      period_en: "Edo–Early Meiji (c. 1603–1900)",        region_ja: "",              region_en: "",                         image: "10.jpg", topics: [1,1,1,0,0,0,0,0,0], ref_image: null },
-  "11": { ja: "着物（白）",               en: "White Kimono",                      fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代〜明治初期（1603〜1900年頃）",      period_en: "Edo–Early Meiji (c. 1603–1900)",        region_ja: "",              region_en: "",                         image: "11.jpg", topics: [1,1,1,0,0,0,0,0,0], ref_image: null },
-  "12": { ja: "着物（白・南郡印）",        en: "White Kimono with Nangun Seal",     fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代〜明治初期（1603〜1900年頃）",      period_en: "Edo–Early Meiji (c. 1603–1900)",        region_ja: "",              region_en: "",                         image: "12.jpg", topics: [1,1,1,0,0,0,0,0,0], ref_image: null },
-  "13": { ja: "着物（白・補修跡あり）",    en: "White Kimono with Repair Traces",   fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代〜明治初期（1603〜1900年頃）",      period_en: "Edo–Early Meiji (c. 1603–1900)",        region_ja: "",              region_en: "",                         image: "13.jpg", topics: [1,1,1,0,0,0,0,0,0], ref_image: null },
-  "14": { ja: "着物（白）",               en: "White Kimono",                      fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代〜明治初期（1603〜1900年頃）",      period_en: "Edo–Early Meiji (c. 1603–1900)",        region_ja: "",              region_en: "",                         image: "14.jpg", topics: [1,1,1,0,0,0,0,0,0], ref_image: null },
-  "15": { ja: "被衣（かづき）",            en: "Kazuki (Head Veil)",                fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸時代（1603〜1868年）",                  period_en: "Edo Period (1603–1868)",                region_ja: "滋賀県",        region_en: "Shiga Prefecture",         image: "15.jpg", topics: [1,1,1,0,0,0,3,0,0], ref_image: "ref01" },
+  "1":  { ja: "打敷の裏地",                    en: "Lining of an <em>uchishiki</em> (Buddhist altar cloth)", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "享保17年（1732年）",                                  period_en: "1732",           region_ja: "",         region_en: "",                image: "1.jpg",  topics: [1,1,1,0,0,0,0,0,3,0], ref_image: null   },
+  "2":  { ja: "打敷の裏地",                    en: "Lining of an <em>uchishiki</em> (Buddhist altar cloth)", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "天明4年（1784年）",                                   period_en: "1784",           region_ja: "",         region_en: "",                image: "2.jpg",  topics: [1,1,1,0,0,0,0,0,3,0], ref_image: null   },
+  "3":  { ja: "反物（未仕立て・南郡印）",      en: "Kimono (white, with Nangun seal)",                       fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸後期（1800年頃）",                               period_en: "c. 1800",        region_ja: "滋賀県",   region_en: "Shiga Prefecture", image: "3.jpg",  topics: [1,1,1,3,0,0,0,0,0,0], ref_image: null   },
+  "4":  { ja: "洗い張りの張物（南郡印）",      en: "<em>Araihari</em> (washed and re-stretched textile), with Nangun seal", fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸後期（1800年頃）",              period_en: "c. 1800",        region_ja: "滋賀県",   region_en: "Shiga Prefecture", image: "4.jpg",  topics: [1,1,1,3,0,3,0,0,0,0], ref_image: null   },
+  "5":  { ja: "裂（砧による光沢あり）",        en: "<em>Kire</em> (kinuta-finished, with sheen)",            fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸後期（1800年頃）",                               period_en: "c. 1800",        region_ja: "",         region_en: "",                image: "5.jpg",  topics: [1,1,1,0,0,0,0,0,0,3], ref_image: "ref02"},
+  "6":  { ja: "オクソザックリ",                en: "<em>Okuso zakkuri</em> (coarse hemp textile)",            fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "明治期（1868–1912年頃）",                            period_en: "c. 1868–1912",   region_ja: "福井県",   region_en: "Fukui Prefecture", image: "6.jpg",  topics: [1,1,1,0,0,0,3,0,0,0], ref_image: null   },
+  "7":  { ja: "着物（白・南郡印あり）",        en: "Kimono (white, with Nangun seal)",                       fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸後期（1700年代後半–1800年代頃）",                 period_en: "c. 1750–1800",   region_ja: "滋賀県",   region_en: "Shiga Prefecture", image: "7.jpg",  topics: [1,1,1,3,0,0,0,0,0,0], ref_image: null   },
+  "8":  { ja: "着物（白）",                    en: "Kimono (white)",                                         fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸後期–明治初期（1800–1880年代頃）",                period_en: "c. 1800–1880",   region_ja: "",         region_en: "",                image: "8.jpg",  topics: [1,1,1,0,0,0,0,0,0,0], ref_image: null   },
+  "9":  { ja: "着物（白）",                    en: "Kimono (white)",                                         fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸後期–明治初期（1800–1880年代頃）",                period_en: "c. 1800–1880",   region_ja: "",         region_en: "",                image: "9.jpg",  topics: [1,1,1,0,0,0,0,0,0,0], ref_image: null   },
+  "10": { ja: "着物（白・粗めの糸）",          en: "Kimono (white, coarse yarn)",                            fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸後期–明治初期（1800–1880年代頃）",                period_en: "c. 1800–1880",   region_ja: "",         region_en: "",                image: "10.jpg", topics: [1,1,1,0,0,0,0,0,0,0], ref_image: null   },
+  "11": { ja: "着物（白）",                    en: "Kimono (white)",                                         fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸後期–明治初期（1800–1880年代頃）",                period_en: "c. 1800–1880",   region_ja: "",         region_en: "",                image: "11.jpg", topics: [1,1,1,0,0,0,0,0,0,0], ref_image: null   },
+  "12": { ja: "着物（白・南郡印）",            en: "Kimono (white, with Nangun seal)",                       fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸後期–明治初期（1800–1880年代頃）",                period_en: "c. 1800–1880",   region_ja: "",         region_en: "",                image: "12.jpg", topics: [1,1,1,0,3,0,0,0,0,0], ref_image: null   },
+  "13": { ja: "着物（白・補修跡あり）",        en: "Kimono (white, with repair traces)",                     fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸後期–明治初期（1800–1880年代頃）",                period_en: "c. 1800–1880",   region_ja: "",         region_en: "",                image: "13.jpg", topics: [1,1,1,0,0,0,0,0,0,0], ref_image: null   },
+  "14": { ja: "着物（白）",                    en: "Kimono (white)",                                         fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸後期–明治初期（1800–1880年代頃）",                period_en: "c. 1800–1880",   region_ja: "",         region_en: "",                image: "14.jpg", topics: [1,1,1,0,0,0,0,0,0,0], ref_image: null   },
+  "15": { ja: "被衣（かづき）",                en: "<em>Kazuki</em> (hooded outer garment)",                 fiber_ja: "大麻", fiber_en: "Hemp", period_ja: "江戸中期（1700年代後半頃）",                          period_en: "c. 1750",        region_ja: "",         region_en: "",                image: "15.jpg", topics: [1,1,1,0,0,0,0,3,0,0], ref_image: "ref01"},
 };
 
+
 // ─── STATE ───────────────────────────────────────────────────────────────────
-let currentLang = 'ja';
+let currentLang = 'en';
 
 function setLang(lang) {
   currentLang = lang;
@@ -403,7 +412,7 @@ function renderPage() {
     headerSub.textContent = isJa ? '資料一覧' : 'All Items';
     footerText.textContent = isJa ? '大麻布資料展示' : 'Hemp Textile Collection';
     const count = Object.keys(ITEMS).length;
-    const gridHtml = Object.entries(ITEMS).map(([key, item]) => {
+    let gridHtml = Object.entries(ITEMS).map(([key, item]) => {
       const title = isJa ? item.ja : item.en;
       const period = isJa ? item.period_ja : item.period_en;
       const region = isJa ? item.region_ja : item.region_en;
@@ -423,6 +432,7 @@ function renderPage() {
           <span class="list-item-arrow">›</span>
         </a>`;
     }).join('');
+    if (count % 2 !== 0) gridHtml += '<div class="list-item-ghost"></div>';
     main.innerHTML = `
       <div class="list-header animate-in">
         <h1 class="list-title-ja">${isJa ? '大麻布コレクション' : 'Hemp Textile Collection'}</h1>
@@ -480,7 +490,7 @@ function renderPage() {
     .filter((t, i) => item.topics[i] === 3)
     .map(t => {
       const text = isJa ? t.desc_ja : t.desc_en;
-      const paras = text.split('\n\n').map(p => `<p class="fixed-topic-text">${p}</p>`).join('');
+      const paras = text.split('\n\n').map(p => `<p class="fixed-topic-text">${p.replace(/\n/g,'<br>')}</p>`).join('');
       return `
     <div class="fixed-topic">
       <p class="fixed-topic-label">${isJa ? t.label_ja : t.label_en}</p>
@@ -510,7 +520,7 @@ function renderPage() {
         <span class="topic-arrow">＋</span>
       </button>
       <div class="topic-body">
-        <p class="topic-text">${isJa ? t.desc_ja : t.desc_en}</p>
+        ${(isJa ? t.desc_ja : t.desc_en).split('\n\n').map(p => `<p class="topic-text">${p.replace(/\n/g,'<br>')}</p>`).join('')}
       </div>
     </div>`).join('');
 
