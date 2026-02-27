@@ -54,8 +54,9 @@
   .item-badge { display: inline-flex; align-items: baseline; gap: 6px; margin-bottom: 28px; }
   .item-num-label { font-size: 11px; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase; }
   .item-num { font-size: 11px; letter-spacing: 0.2em; color: var(--accent-light); line-height: 1; }
-  .item-title { font-size: 22px; font-weight: 400; letter-spacing: 0.05em; line-height: 1.5; margin-bottom: 8px; color: var(--ink); }
-  .item-title-en { font-size: 13px; font-weight: 300; color: var(--text-muted); margin-bottom: 28px; letter-spacing: 0.03em; }
+  .item-title { font-size: 22px; font-weight: 400; letter-spacing: 0.05em; line-height: 1.5; margin-bottom: 8px; color: var(--ink); font-style: normal; }
+  .item-title em, .item-title-en em, .list-item-title em { font-style: normal; }
+  .item-title-en { font-size: 13px; font-weight: 300; color: var(--text-muted); margin-bottom: 28px; letter-spacing: 0.03em; font-style: normal; }
 
   .item-image-wrap { width: 100%; aspect-ratio: 4/3; margin-bottom: 28px; overflow: hidden; }
   .item-image-wrap img { width: 100%; height: 100%; object-fit: contain; display: block; }
@@ -239,7 +240,7 @@
 <main id="content"></main>
 
 <footer>
-  <span class="footer-text" id="footer-text">Hemp Cloth Collection</span>
+  <span class="footer-text" id="footer-text">Hemp Archive: 1700–1900</span>
 </footer>
 
 <script>
@@ -405,7 +406,7 @@ function renderPage() {
   if (!id) {
     main.classList.add('list-view');
     headerSub.textContent = isJa ? '資料一覧' : 'All Items';
-    footerText.textContent = isJa ? '大麻布資料展示' : 'Hemp Cloth Collection';
+    footerText.textContent = isJa ? '大麻布アーカイヴ 1700–1900' : 'Hemp Archive: 1700–1900';
     const count = Object.keys(ITEMS).length;
     let gridHtml = Object.entries(ITEMS).map(([key, item]) => {
       const title = isJa ? item.ja : item.en;
@@ -429,8 +430,8 @@ function renderPage() {
     }).join('');
     main.innerHTML = `
       <div class="list-header animate-in">
-        <h1 class="list-title-ja">${isJa ? '大麻布コレクション' : 'Hemp Cloth Collection'}</h1>
-        <p class="list-title-en">${isJa ? 'Hemp Cloth Collection' : '大麻布コレクション'}</p>
+        <h1 class="list-title-ja">${isJa ? '大麻布アーカイヴ' : 'Hemp Archive'}</h1>
+        <p class="list-title-en">1700–1900</p>
         <p class="list-count">${isJa ? `全 ${count} 点` : `${count} items`}</p>
       </div>
       <div class="list-grid">${gridHtml}</div>`;
@@ -456,7 +457,7 @@ function renderPage() {
   main.classList.remove('list-view');
   const item = ITEMS[id];
   headerSub.textContent = isJa ? '資料詳細' : 'Item Detail';
-  footerText.textContent = isJa ? '大麻布資料展示' : 'Hemp Cloth Collection';
+  footerText.textContent = isJa ? '大麻布アーカイヴ 1700–1900' : 'Hemp Archive: 1700–1900';
 
   const title = isJa ? item.ja : item.en;
   const fiber = isJa ? item.fiber_ja : item.fiber_en;
