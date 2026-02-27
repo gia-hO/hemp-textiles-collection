@@ -115,6 +115,7 @@
   /* Footer */
   footer { padding: 20px 28px; border-top: 1px solid var(--rule); display: flex; justify-content: center; }
   .footer-text { font-size: 10px; letter-spacing: 0.15em; color: var(--text-muted); }
+  .list-credit { font-size: 11px; color: var(--text-muted); line-height: 1.8; margin-top: 28px; }
 
   /* Lightbox */
   .item-image-wrap { cursor: zoom-in; }
@@ -434,7 +435,11 @@ function renderPage() {
         <p class="list-title-en">1700–1900</p>
         <p class="list-count">${isJa ? `全 ${count} 点` : `${count} items`}</p>
       </div>
-      <div class="list-grid">${gridHtml}</div>`;
+      <div class="list-grid">${gridHtml}</div>
+      <p class="list-credit">${isJa
+        ? '協力：吉田真一郎<br>本アーカイヴへの資料提供および調査は、吉田真一郎氏の協力に基づいています。'
+        : 'In collaboration with Shinichiro Yoshida.<br>The provision of materials and research for this archive were made possible through the cooperation of Shinichiro Yoshida.'
+      }</p>`;
     return;
   }
 
