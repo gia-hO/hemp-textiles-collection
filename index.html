@@ -57,7 +57,7 @@
   .item-title { font-size: 22px; font-weight: 400; letter-spacing: 0.05em; line-height: 1.5; margin-bottom: 8px; color: var(--ink); }
   .item-title-en { font-size: 13px; font-weight: 300; color: var(--text-muted); margin-bottom: 28px; letter-spacing: 0.03em; }
 
-  .item-image-wrap { width: 100%; aspect-ratio: 4/3; background: var(--paper-warm); border: 1px solid var(--rule); margin-bottom: 28px; overflow: hidden; }
+  .item-image-wrap { width: 100%; aspect-ratio: 4/3; margin-bottom: 28px; overflow: hidden; }
   .item-image-wrap img { width: 100%; height: 100%; object-fit: contain; display: block; }
   .image-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--text-muted); }
   .image-placeholder-icon { font-size: 32px; opacity: 0.3; }
@@ -101,13 +101,13 @@
   .list-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); overflow: hidden; }
   .list-item { background: var(--paper); padding: 16px; text-decoration: none; color: inherit; display: flex; gap: 12px; align-items: flex-start; transition: background 0.15s; -webkit-tap-highlight-color: transparent; min-width: 0; }
   .list-item:hover, .list-item:active { background: var(--paper-warm); }
-  .list-item-ghost { background: var(--bg); cursor: default; }
+  .list-item-ghost { background: var(--paper); cursor: default; border: none; }
   .list-item-thumb { width: 52px; height: 52px; background: var(--paper-warm); border: 1px solid var(--rule); flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
   .list-item-thumb img { width: 100%; height: 100%; object-fit: cover; }
   .list-item-thumb-placeholder { font-size: 18px; opacity: 0.2; }
   .list-item-body { flex: 1; min-width: 0; }
   .list-item-num { font-size: 10px; color: var(--accent-light); letter-spacing: 0.1em; margin-bottom: 2px; }
-  .list-item-title { font-size: 12px; font-weight: 400; letter-spacing: 0.03em; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .list-item-title { font-size: 12px; font-weight: 400; font-style: normal; letter-spacing: 0.03em; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .list-item-meta { font-size: 10px; color: var(--text-muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .list-item-arrow { font-size: 10px; color: var(--rule); align-self: center; flex-shrink: 0; }
 
@@ -226,8 +226,8 @@
     <span class="header-title-main" id="header-subtitle">資料詳細</span>
   </div>
   <div class="lang-toggle">
-    <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
     <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">JP</button>
   </div>
 </header>
 
@@ -410,7 +410,7 @@ function renderPage() {
   if (!id) {
     main.classList.add('list-view');
     headerSub.textContent = isJa ? '資料一覧' : 'All Items';
-    footerText.textContent = isJa ? '大麻布資料展示' : 'Hemp Textile Collection';
+    footerText.textContent = isJa ? '大麻布資料展示' : 'Hemp Cloth Collection';
     const count = Object.keys(ITEMS).length;
     let gridHtml = Object.entries(ITEMS).map(([key, item]) => {
       const title = isJa ? item.ja : item.en;
@@ -435,8 +435,8 @@ function renderPage() {
     if (count % 2 !== 0) gridHtml += '<div class="list-item-ghost"></div>';
     main.innerHTML = `
       <div class="list-header animate-in">
-        <h1 class="list-title-ja">${isJa ? '大麻布コレクション' : 'Hemp Textile Collection'}</h1>
-        <p class="list-title-en">${isJa ? 'Hemp Textile Collection' : '大麻布コレクション'}</p>
+        <h1 class="list-title-ja">${isJa ? '大麻布コレクション' : 'Hemp Cloth Collection'}</h1>
+        <p class="list-title-en">${isJa ? 'Hemp Cloth Collection' : '大麻布コレクション'}</p>
         <p class="list-count">${isJa ? `全 ${count} 点` : `${count} items`}</p>
       </div>
       <div class="list-grid">${gridHtml}</div>`;
@@ -462,7 +462,7 @@ function renderPage() {
   main.classList.remove('list-view');
   const item = ITEMS[id];
   headerSub.textContent = isJa ? '資料詳細' : 'Item Detail';
-  footerText.textContent = isJa ? '大麻布資料展示' : 'Hemp Textile Collection';
+  footerText.textContent = isJa ? '大麻布資料展示' : 'Hemp Cloth Collection';
 
   const title = isJa ? item.ja : item.en;
   const fiber = isJa ? item.fiber_ja : item.fiber_en;
