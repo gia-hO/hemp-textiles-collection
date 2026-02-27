@@ -101,7 +101,7 @@
   .list-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); overflow: hidden; }
   .list-item { background: var(--paper); padding: 16px; text-decoration: none; color: inherit; display: flex; gap: 12px; align-items: flex-start; transition: background 0.15s; -webkit-tap-highlight-color: transparent; min-width: 0; }
   .list-item:hover, .list-item:active { background: var(--paper-warm); }
-  .list-item-ghost { background: var(--paper); cursor: default; border: none; }
+  .list-grid::after { content: ''; display: block; background: var(--paper); }
   .list-item-thumb { width: 52px; height: 52px; background: var(--paper-warm); border: 1px solid var(--rule); flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
   .list-item-thumb img { width: 100%; height: 100%; object-fit: cover; }
   .list-item-thumb-placeholder { font-size: 18px; opacity: 0.2; }
@@ -238,13 +238,8 @@
 
 <main id="content"></main>
 
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close">✕</button>
-  <img id="lightbox-img" src="" alt="">
-</div>
-
 <footer>
-  <span class="footer-text" id="footer-text">大麻布資料展示</span>
+  <span class="footer-text" id="footer-text">Hemp Cloth Collection</span>
 </footer>
 
 <script>
@@ -432,7 +427,6 @@ function renderPage() {
           <span class="list-item-arrow">›</span>
         </a>`;
     }).join('');
-    if (count % 2 !== 0) gridHtml += '<div class="list-item-ghost"></div>';
     main.innerHTML = `
       <div class="list-header animate-in">
         <h1 class="list-title-ja">${isJa ? '大麻布コレクション' : 'Hemp Cloth Collection'}</h1>
