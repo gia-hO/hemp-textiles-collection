@@ -241,7 +241,7 @@
 <main id="content"></main>
 
 <footer>
-  <span class="footer-text" id="footer-text">Hemp Archive: 1700–1900</span>
+  <span class="footer-text" id="footer-text">Hemp Archive: c. 1700–1900</span>
 </footer>
 
 <script>
@@ -407,7 +407,7 @@ function renderPage() {
   if (!id) {
     main.classList.add('list-view');
     headerSub.textContent = isJa ? '資料一覧' : 'All Items';
-    footerText.textContent = isJa ? '大麻布アーカイヴ 1700–1900' : 'Hemp Archive: 1700–1900';
+    footerText.textContent = isJa ? '大麻布アーカイヴ c. 1700–1900' : 'Hemp Archive: c. 1700–1900';
     const count = Object.keys(ITEMS).length;
     let gridHtml = Object.entries(ITEMS).map(([key, item]) => {
       const title = isJa ? item.ja : item.en;
@@ -432,7 +432,7 @@ function renderPage() {
     main.innerHTML = `
       <div class="list-header animate-in">
         <h1 class="list-title-ja">${isJa ? '大麻布アーカイヴ' : 'Hemp Archive'}</h1>
-        <p class="list-title-en">1700–1900</p>
+        <p class="list-title-en">c. 1700–1900</p>
         <p class="list-count">${isJa ? `全 ${count} 点` : `${count} items`}</p>
       </div>
       <div class="list-grid">${gridHtml}</div>
@@ -462,7 +462,7 @@ function renderPage() {
   main.classList.remove('list-view');
   const item = ITEMS[id];
   headerSub.textContent = isJa ? '資料詳細' : 'Item Detail';
-  footerText.textContent = isJa ? '大麻布アーカイヴ 1700–1900' : 'Hemp Archive: 1700–1900';
+  footerText.textContent = isJa ? '大麻布アーカイヴ c. 1700–1900' : 'Hemp Archive: c. 1700–1900';
 
   const title = isJa ? item.ja : item.en;
   const fiber = isJa ? item.fiber_ja : item.fiber_en;
