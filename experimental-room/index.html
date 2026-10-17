@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>実験の間｜オクソザックリ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* Layout: reference collection-site tone — single narrow column, hairline rules, image first, label/value rows, quiet accordion */
+  :root {
+    --ink: #111111;
+    --paper: #ffffff;
+    --paper-warm: #f4f4f3;
+    --rule: #dddddd;
+    --text-body: #333333;
+    --text-muted: #888888;
+    --accent-light: #999999;
+    --overlay: rgba(0,0,0,0.92);
+    --font-ja: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+    --font-latin: 'DM Sans', 'Noto Sans JP', 'Helvetica Neue', Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #ededeb; --paper: #151515; --paper-warm: #1f1f1e; --rule: #333332;
+      --text-body: #cfcfcc; --text-muted: #8d8d8a; --accent-light: #77776f; --overlay: rgba(0,0,0,0.94);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #ededeb; --paper: #151515; --paper-warm: #1f1f1e; --rule: #333332;
+    --text-body: #cfcfcc; --text-muted: #8d8d8a; --accent-light: #77776f; --overlay: rgba(0,0,0,0.94);
+    color-scheme: dark;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: var(--font-ja);
+    min-height: 100vh; display: flex; flex-direction: column;
+  }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+
+  header {
+    padding-block: 24px 20px;
+    padding-left: max(28px, env(safe-area-inset-left, 0px));
+    padding-right: max(28px, env(safe-area-inset-right, 0px));
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
+    border-bottom: 1px solid var(--rule); background: var(--paper);
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+  }
+  .header-title { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .header-title-ja { font-size: 11px; letter-spacing: 0.25em; color: var(--text-muted); font-weight: 300; }
+  .header-title-main { font-size: 15px; letter-spacing: 0.1em; font-weight: 400; color: var(--ink); }
+  .lang-toggle { display: flex; border: 1px solid var(--rule); border-radius: 2px; overflow: hidden; flex-shrink: 0; margin-top: 2px; }
+  .lang-btn { padding: 5px 12px; font-size: 11px; letter-spacing: 0.1em; cursor: pointer; background: transparent; border: none; color: var(--text-muted); font-family: var(--font-latin); transition: all 0.2s; }
+  .lang-btn.active { background: var(--ink); color: var(--paper); }
+  .lang-btn:focus-visible, .topic-trigger:focus-visible, .item-image-wrap:focus-visible { outline: 1px solid var(--ink); outline-offset: 2px; }
+
+  main {
+    flex: 1; max-width: 600px; margin: 0 auto; width: 100%;
+    padding-block: 36px 60px;
+    padding-left: max(24px, env(safe-area-inset-left, 0px));
+    padding-right: max(24px, env(safe-area-inset-right, 0px));
+  }
+
+  .item-badge { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-bottom: 28px; }
+  .badge-label { font-size: 11px; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase; font-family: var(--font-latin); }
+  .badge-value { font-size: 11px; letter-spacing: 0.2em; color: var(--accent-light); font-family: var(--font-latin); }
+  .badge-status { font-size: 10px; letter-spacing: 0.15em; color: var(--ink); border: 1px solid var(--ink); padding: 2px 8px; border-radius: 2px; }
+
+  .item-title { font-size: 22px; font-weight: 400; letter-spacing: 0.05em; line-height: 1.5; margin-bottom: 8px; text-wrap: balance; }
+  .item-title-en { font-size: 13px; font-weight: 300; color: var(--text-muted); margin-bottom: 28px; letter-spacing: 0.03em; font-family: var(--font-latin); }
+
+  .item-image-wrap { width: 100%; max-width: 100%; aspect-ratio: 3/4; max-height: 78vh; background: var(--paper-warm); border: 1px solid var(--rule); margin-bottom: 10px; overflow: hidden; cursor: zoom-in; }
+  .item-image-wrap img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .image-note { font-size: 10px; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 28px; line-height: 1.6; }
+
+  .meta-section { border-top: 1px solid var(--rule); padding-top: 20px; margin-bottom: 28px; }
+  .meta-row { display: flex; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--paper-warm); }
+  .meta-label { font-size: 10px; letter-spacing: 0.2em; color: var(--text-muted); width: 76px; flex-shrink: 0; padding-top: 3px; text-transform: uppercase; }
+  .meta-value { font-size: 14px; color: var(--text-body); line-height: 1.6; flex: 1; min-width: 0; font-variant-numeric: tabular-nums; }
+
+  .fixed-topic { margin-bottom: 36px; }
+  .fixed-topic-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+  .fixed-topic-text { font-size: 13px; line-height: 2.0; color: var(--text-body); }
+  .fixed-topic-text + .fixed-topic-text { margin-top: 1em; }
+  .fixed-topic-text em, .topic-text em { font-style: italic; }
+
+  .section-heading { font-size: 10px; letter-spacing: 0.25em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+  .section-heading::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+  .topics-section { padding-top: 4px; margin-bottom: 44px; }
+  .topic-item { border-bottom: 1px solid var(--rule); }
+  .topic-trigger { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 14px 0; background: none; border: none; cursor: pointer; text-align: left; gap: 12px; font-family: inherit; -webkit-tap-highlight-color: transparent; }
+  .topic-label { font-size: 13px; font-weight: 400; letter-spacing: 0.03em; color: var(--text-body); line-height: 1.5; flex: 1; }
+  .topic-trigger:hover .topic-label { color: var(--ink); }
+  .topic-arrow { font-size: 16px; color: var(--accent-light); flex-shrink: 0; transition: transform 0.25s ease; line-height: 1; }
+  .topic-item.open .topic-arrow { transform: rotate(45deg); }
+  .topic-body { overflow: hidden; max-height: 0; transition: max-height 0.35s ease, opacity 0.25s ease; opacity: 0; }
+  .topic-item.open .topic-body { max-height: 1200px; opacity: 1; }
+  .topic-text { font-size: 13px; line-height: 2.0; color: var(--text-body); font-weight: 300; padding-bottom: 20px; }
+
+  .rotation-list { list-style: none; border-top: 1px solid var(--rule); }
+  .rotation-item { display: grid; grid-template-columns: 76px 1fr auto; gap: 16px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+  .rotation-num { font-size: 10px; letter-spacing: 0.2em; color: var(--text-muted); font-family: var(--font-latin); text-transform: uppercase; }
+  .rotation-body { min-width: 0; }
+  .rotation-title { font-size: 13px; color: var(--text-body); line-height: 1.5; }
+  .rotation-date { font-size: 11px; color: var(--text-muted); margin-top: 2px; font-variant-numeric: tabular-nums; font-family: var(--font-latin); }
+  .rotation-state { font-size: 10px; letter-spacing: 0.15em; color: var(--text-muted); }
+  .rotation-item.current .rotation-title { color: var(--ink); }
+  .rotation-item.current .rotation-state { color: var(--ink); }
+  .rotation-item.pending .rotation-title { color: var(--text-muted); }
+
+  footer {
+    padding-block: 20px;
+    padding-left: max(28px, env(safe-area-inset-left, 0px));
+    padding-right: max(28px, env(safe-area-inset-right, 0px));
+    border-top: 1px solid var(--rule); display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center;
+  }
+  .footer-text { font-size: 10px; letter-spacing: 0.15em; color: var(--text-muted); }
+  .footer-sub { font-size: 10px; letter-spacing: 0.1em; color: var(--accent-light); font-family: var(--font-latin); }
+
+  .lightbox { position: fixed; inset: 0; background: var(--overlay); z-index: 100; cursor: zoom-out; display: flex; align-items: center; justify-content: center; padding: max(20px, env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) max(20px, env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px)); }
+  .lightbox img { max-width: 92vw; max-height: 92vh; object-fit: contain; display: block; }
+  .lightbox-close { position: absolute; top: calc(16px + env(safe-area-inset-top, 0px)); right: calc(20px + env(safe-area-inset-right, 0px)); color: rgba(255,255,255,0.75); font-size: 26px; font-weight: 300; cursor: pointer; line-height: 1; background: none; border: none; padding: 4px 8px; }
+
+  @media (max-width: 480px) {
+    header { padding-block: 16px 14px; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+    .header-title-main { font-size: 13px; }
+    main { padding-block: 24px 48px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+    .item-title { font-size: 18px; }
+    .meta-label, .rotation-num { font-size: 9px; }
+    .meta-label { width: 60px; }
+    .rotation-item { grid-template-columns: 60px 1fr auto; gap: 12px; }
+    .meta-value { font-size: 13px; }
+    .topic-label { font-size: 12px; }
+    .topic-text, .fixed-topic-text { font-size: 12px; line-height: 1.9; }
+  }
+
+  @keyframes fadeUp { from { opacity: 0.001; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  .animate-in { animation: fadeUp 0.5s ease both; }
+  .delay-1 { animation-delay: 0.06s; } .delay-2 { animation-delay: 0.12s; } .delay-3 { animation-delay: 0.18s; }
+  @media (prefers-reduced-motion: reduce) { .animate-in { animation: none; } .topic-body, .topic-arrow { transition: none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-title">
+    <span class="header-title-ja" id="h-sub"></span>
+    <span class="header-title-main" id="h-main"></span>
+  </div>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button class="lang-btn active" id="btn-ja" type="button">日本語</button>
+    <button class="lang-btn" id="btn-en" type="button">EN</button>
+  </div>
+</header>
+
+<main id="content"></main>
+
+<footer>
+  <span class="footer-text" id="f-main"></span>
+  <span class="footer-sub">HOSOO GALLERY</span>
+</footer>
+
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lightbox-close" type="button" aria-label="Close">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+const IMG = "images/okuso-zakkuri.jpg";
+
+const T = {
+  ja: {
+    hSub: '吉田真一郎「意識の白」',
+    hMain: '実験の間',
+    footer: '吉田真一郎「意識の白」　2026.11.6–2027.3.20',
+    room: 'Room 3', phase: '第1期', status: '展示中',
+    title: 'オクソザックリ', titleAlt: 'Okuso-zakkuri',
+    imgNote: 'オクソザックリ　明治時代　近世麻布研究所蔵<br>撮影：〇〇〇〇（要確認）',
+    meta: [
+      ['種別', '野良着'],
+      ['繊維', '大麻'],
+      ['年代', '明治時代（1868–1912）'],
+      ['地域', '福井県、石川県、岐阜県周辺'],
+      ['展示期間', '2026年11月6日（金）–'],
+    ],
+    descLabel: '解説',
+    desc: [
+      'オクソザックリは、野良着として用いられてきた大麻布の仕事着である。オクソ（苧屑）とは、大麻の苧から粗皮を削り取る際に出る、繊維質の屑のこと。本来は捨てられるものだが、明治時代まで福井県、石川県、岐阜県周辺では、これを緯糸として布を織り、日常の仕事着とした。',
+      'それは、大麻を育て、糸を績み、布を織るまでのすべてを自らの手で担っていた時代の、わずかな繊維も無駄にせず使い切る暮らしの知恵であった。糸そのものによって構成された《意識の白Ⅰ》に対し、オクソザックリは糸づくりの過程で取り除かれた繊維から成る。'
+    ],
+    topicsHeading: '関連解説',
+    topics: [
+      ['実験の間について', 'この部屋では、吉田真一郎が約40年にわたり蒐集してきた麻布資料を会期中に厳選し、入れ替えながら展示を行います。吉田が蒐集し、研究してきた資料は、江戸時代にさまざまな産地で生産された一級品の着物から、明治時代から昭和時代にかけて作られた野良着や民具に至るまで、繊維の種類、時代、用途を横断するものです。ここでの展示は、資料のアーカイヴ性とアート的思考を往還する実験的な試みです。吉田が蒐集と研究のなかで発見した一つ一つの要素を再検証し、作品に至るまでの試行錯誤の過程そのものを公開していきます。'],
+      ['大麻布とは', '江戸時代に木綿が普及するまで、大麻布は苧麻布とともに、庶民から上流階級に至るまで幅広く衣服に用いられてきた。繊維が水に強いことから、衣服だけでなく、縄や網、袋など暮らしの道具にも広く使われた。大麻布は、水に浸し、天日に晒すことを繰り返すことで、白く柔らかくなる。'],
+      ['大麻利用の歴史', '日本における大麻の繊維利用の歴史は長く、福井県の鳥浜貝塚（縄文時代草創期–前期）からは、大麻の縄や種子が出土している。オクソザックリがつくられた地域は、この鳥浜貝塚にもほど近い。'],
+      ['苧（お）と苧引き', '大麻の茎から剥いだ皮を「苧（お）」と呼ぶ。苧から表皮を削り取り、繊維だけを取り出す工程を苧引きという。このとき削り落とされ、繊維質を含んだまま残る屑が、オクソである。']
+    ],
+    rotHeading: '展示の記録',
+    rotations: [
+      { num: '第1期', title: 'オクソザックリ', date: '2026.11.6–', state: '展示中', cls: 'current' },
+      { num: '第2期', title: '準備中', date: '', state: '', cls: 'pending' }
+    ]
+  },
+  en: {
+    hSub: 'Shinichiro Yoshida: The White of Consciousness',
+    hMain: 'The Experimental Room',
+    footer: 'The White of Consciousness　November 6, 2026–March 20, 2027',
+    room: 'Room 3', phase: 'Rotation 1', status: 'On view',
+    title: 'Okuso-zakkuri', titleAlt: 'オクソザックリ',
+    imgNote: '<em>Okuso-zakkuri</em>, Meiji period. Collection of the Institute of Early Modern Hemp Cloth<br>Photo: TBC',
+    meta: [
+      ['Type', 'Work garment'],
+      ['Fiber', 'Hemp'],
+      ['Period', 'Meiji period (1868–1912)'],
+      ['Region', 'Fukui, Ishikawa, and Gifu Prefectures'],
+      ['On view', 'From November 6, 2026'],
+    ],
+    descLabel: 'Description',
+    desc: [
+      '<em>Okuso-zakkuri</em> is a hemp work garment worn for labor in the fields. <em>Okuso</em> refers to the fibrous waste left when the coarse outer bark is scraped from hemp. Though normally discarded, until the Meiji period it was used as weft in the areas around Fukui, Ishikawa, and Gifu Prefectures, woven into cloth for everyday work clothes.',
+      'It reflects the practical wisdom of an era when people grew the hemp, made the yarn, and wove the cloth entirely by their own hands, using every last fiber. Where <em>The White of Consciousness I</em> is composed of yarn itself, <em>okuso-zakkuri</em> is made from the fibers removed in the process of making yarn.'
+    ],
+    topicsHeading: 'Related Topics',
+    topics: [
+      ['About the Experimental Room', 'In this room, hemp textiles selected from the collection Shinichiro Yoshida has assembled over some forty years are shown in rotation throughout the exhibition. His materials range from first-rate kimono produced across Japan in the Edo period to work garments and folk implements made from the Meiji through the Showa period, spanning fiber types, eras, and uses. The room is an experiment that moves between the archival character of these materials and artistic thinking. Re-examining each element Yoshida has found through collecting and research, it opens to view the process of trial and error that leads toward a work.'],
+      ['About Hemp Cloth', 'Until cotton became widespread in the Edo period, hemp cloth, along with ramie, was worn by everyone from commoners to the upper classes. Because the fiber stands up well to water, it was also used for rope, nets, bags, and other everyday tools. Hemp cloth becomes white and soft through repeated soaking in water and bleaching in the sun.'],
+      ['A Long History of Hemp', 'Hemp has a long history of use as a fiber in Japan. Hemp cord and seeds have been excavated at the Torihama Shell Midden in Fukui Prefecture, dating to the Incipient to Early Jomon period. The region where <em>okuso-zakkuri</em> was made lies not far from this site.'],
+      ['<em>O</em> and Scraping', 'The bark stripped from hemp stalks is called <em>o</em>. Scraping the outer skin from it to leave only the fiber is called <em>o-hiki</em>. The fibrous scraps removed in this process are <em>okuso</em>.']
+    ],
+    rotHeading: 'Rotations',
+    rotations: [
+      { num: 'Rotation 1', title: '<em>Okuso-zakkuri</em>', date: 'From Nov. 6, 2026', state: 'On view', cls: 'current' },
+      { num: 'Rotation 2', title: 'Coming soon', date: '', state: '', cls: 'pending' }
+    ]
+  }
+};
+
+let lang = 'ja';
+try { const s = localStorage.getItem('okuso-lang'); if (s === 'en' || s === 'ja') lang = s; } catch (e) {}
+
+function render() {
+  const t = T[lang];
+  document.documentElement.lang = lang;
+  document.getElementById('btn-ja').classList.toggle('active', lang === 'ja');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('h-sub').textContent = t.hSub;
+  document.getElementById('h-main').textContent = t.hMain;
+  document.getElementById('f-main').textContent = t.footer;
+
+  const meta = t.meta.map(([l, v]) => `<div class="meta-row"><span class="meta-label">${l}</span><span class="meta-value">${v}</span></div>`).join('');
+  const desc = t.desc.map(p => `<p class="fixed-topic-text">${p}</p>`).join('');
+  const topics = t.topics.map(([l, d]) => `
+    <div class="topic-item">
+      <button class="topic-trigger" type="button" aria-expanded="false">
+        <span class="topic-label">${l}</span><span class="topic-arrow">＋</span>
+      </button>
+      <div class="topic-body"><p class="topic-text">${d}</p></div>
+    </div>`).join('');
+  const rots = t.rotations.map(r => `
+    <li class="rotation-item ${r.cls}">
+      <span class="rotation-num">${r.num}</span>
+      <div class="rotation-body"><div class="rotation-title">${r.title}</div>${r.date ? `<div class="rotation-date">${r.date}</div>` : ''}</div>
+      <span class="rotation-state">${r.state}</span>
+    </li>`).join('');
+
+  document.getElementById('content').innerHTML = `
+    <div class="item-badge animate-in">
+      <span class="badge-label">${t.room}</span>
+      <span class="badge-value">${t.phase}</span>
+      <span class="badge-status">${t.status}</span>
+    </div>
+    <h1 class="item-title animate-in delay-1">${t.title}</h1>
+    <p class="item-title-en animate-in delay-1">${t.titleAlt}</p>
+    <div class="item-image-wrap animate-in delay-2" tabindex="0" role="button" aria-label="${t.title}" id="main-img">
+      <img src="${IMG}" alt="${lang === 'ja' ? 'オクソザックリ' : 'Okuso-zakkuri'}">
+    </div>
+    <p class="image-note">${t.imgNote}</p>
+    <div class="meta-section animate-in delay-3">${meta}</div>
+    <div class="fixed-topic animate-in delay-3">
+      <p class="fixed-topic-label">${t.descLabel}</p>
+      ${desc}
+    </div>
+    <div class="topics-section">
+      <p class="section-heading">${t.topicsHeading}</p>
+      ${topics}
+    </div>
+    <div>
+      <p class="section-heading">${t.rotHeading}</p>
+      <ul class="rotation-list">${rots}</ul>
+    </div>`;
+}
+
+function setLang(l) { lang = l; try { localStorage.setItem('okuso-lang', l); } catch (e) {} render(); }
+document.getElementById('btn-ja').addEventListener('click', () => setLang('ja'));
+document.getElementById('btn-en').addEventListener('click', () => setLang('en'));
+
+const lb = document.getElementById('lightbox');
+function openLb() { document.getElementById('lightbox-img').src = IMG; lb.hidden = false; document.body.style.overflow = 'hidden'; }
+function closeLb() { lb.hidden = true; document.body.style.overflow = ''; }
+lb.addEventListener('click', closeLb);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+
+document.getElementById('content').addEventListener('click', e => {
+  const trig = e.target.closest('.topic-trigger');
+  if (trig) { const it = trig.closest('.topic-item'); const open = it.classList.toggle('open'); trig.setAttribute('aria-expanded', open); return; }
+  if (e.target.closest('#main-img')) openLb();
+});
+document.getElementById('content').addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.id === 'main-img') { e.preventDefault(); openLb(); }
+});
+
+render();
+</script>
+
+</body>
+</html>
